@@ -1,3 +1,7 @@
 {
-    "jsonnet.libPaths": ["/workspace/pluggable-o11y-stack/vendor"]
+    "jsonnet.libPaths": ["/workspace/pluggable-o11y-stack/vendor"],
+    "jsonnet.extStrs": {
+        "namespace": "external-namespace",
+        "include_alerting": true
+    }
 }
