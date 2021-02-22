@@ -1,2 +1,5 @@
 tasks: 
   - init: make setup-workspace
+vscode:
+  extensions:
+    - heptio.jsonnet@0.1.0:woEDU5N62LRdgdz0g/I6sQ==
