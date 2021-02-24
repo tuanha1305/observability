@@ -5,6 +5,9 @@ setup-workspace:
 	go get github.com/brancz/gojsontoyaml
 	jb init
 	jb install github.com/prometheus-operator/kube-prometheus/jsonnet/kube-prometheus@release-0.7
-	wget https://raw.githubusercontent.com/prometheus-operator/kube-prometheus/release-0.7/build.sh -O build.sh 
-	chmod +x build.sh
+
+build-stack:
 	./build.sh o11y-stack.jsonnet
+
+build-grafana:
+	./build.sh grafana.jsonnet
