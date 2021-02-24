@@ -8,7 +8,16 @@ function(params)
   // Write extra config to the objects below to override the generated YAMLs 
   clusterRole+: {},
   clusterRoleBinding+: {},
-  daemonset+: {},
+  daemonset+: {
+    spec+: {
+      updateStrategy+: {
+        rollingUpdate+:{
+          // The default value is '10%'. 
+          maxUnavailable: 1
+        },
+      },
+    },
+  },
   prometheusRule+: {},
   service+: {},
   serviceAccount+: {},

@@ -13,7 +13,7 @@ local commonConfig = {
     // Used to override default version comming from upstream
     versions: {
         prometheus: '2.25.0',
-        nodeExporter: '1.0.1',
+        nodeExporter: '1.1.1',
         kubeStateMetrics: '1.9.7',
     },
 

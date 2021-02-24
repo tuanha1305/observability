@@ -11,3 +11,9 @@ build-stack:
 
 build-grafana:
 	./build.sh grafana.jsonnet
+
+apply-stack: 
+	kubectl apply -f manifests/node-exporter/ -f manifests/kube-state-metrics/
+
+delete-stack: 
+	kubectl delete -f manifests/node-exporter/ -f manifests/kube-state-metrics/
