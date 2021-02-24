@@ -12,7 +12,6 @@ PATH="$(pwd)/tmp/bin:${PATH}"
 
 # Make sure to start with a clean 'manifests' dir
 rm -rf manifests
-mkdir -p manifests/setup
 mkdir -p manifests/node-exporter
 mkdir -p manifests/kube-state-metrics
 mkdir -p manifests/prometheus-operator

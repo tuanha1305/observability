@@ -133,4 +133,10 @@ local inCluster = {
 { ['kube-state-metrics/' + name]: inCluster.kubeStateMetrics[name] for name in std.objectFields(inCluster.kubeStateMetrics) } +
 { ['prometheus-operator/' + name]: inCluster.prometheusOperator[name] for name in std.objectFields(inCluster.prometheusOperator) } +
 { ['prometheus/' + name]: inCluster.prometheus[name] for name in std.objectFields(inCluster.prometheus) } +
-{ ['alertmanager/' + name]: inCluster.alertmanager[name] for name in std.objectFields(inCluster.alertmanager) }
+
+// Optionally include Alertmanager
+// There is no need to exclude alerting rules if they are not routed anywhere
+if std.extVar('include_alerting') then
+  { ['alertmanager/' + name]: inCluster.alertmanager[name] for name in std.objectFields(inCluster.alertmanager) }
+else 
+  {}
