@@ -13,7 +13,14 @@ build-grafana:
 	./build.sh grafana.jsonnet
 
 apply-stack: 
-	kubectl apply -f manifests/node-exporter/ -f manifests/kube-state-metrics/
+	kubectl apply \
+	-f manifests/prometheus-operator/deployment.yaml \
+	-f manifests/prometheus-operator/ \
+	-f manifests/node-exporter/ \
+	-f manifests/kube-state-metrics/ 
 
 delete-stack: 
-	kubectl delete -f manifests/node-exporter/ -f manifests/kube-state-metrics/
+	kubectl delete \
+	-f manifests/node-exporter/ \
+	-f manifests/kube-state-metrics/ \
+	-f manifests/prometheus-operator/
