@@ -13,6 +13,7 @@ PATH="$(pwd)/tmp/bin:${PATH}"
 # Make sure to start with a clean 'manifests' dir
 rm -rf manifests
 mkdir -p manifests/setup
+mkdir -p manifests/node-exporter
 
 # Calling gojsontoyaml is optional, but we would like to generate yaml, not json
 jsonnet -J vendor -m manifests \
