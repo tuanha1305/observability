@@ -7,7 +7,7 @@ setup-workspace:
 	jb install github.com/prometheus-operator/kube-prometheus/jsonnet/kube-prometheus@release-0.7
 
 build-stack:
-	./build.sh o11y-stack.jsonnet
+	./build.sh main.jsonnet
 
 build-grafana:
 	./build.sh grafana.jsonnet
