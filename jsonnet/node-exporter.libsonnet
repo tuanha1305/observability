@@ -6,10 +6,11 @@ function(params)
   nodeExporter(cfg) {
 
   // Write extra config to the objects below to override the generated YAMLs 
-  serviceMonitor+: {},
   clusterRole+: {},
-  daemonset+: {},
   clusterRoleBinding+: {},
-  serviceAccount+: {},
+  daemonset+: {},
+  prometheusRule+: {},
   service+: {},
+  serviceAccount+: {},
+  serviceMonitor+: {},
 }

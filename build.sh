@@ -14,6 +14,7 @@ PATH="$(pwd)/tmp/bin:${PATH}"
 rm -rf manifests
 mkdir -p manifests/setup
 mkdir -p manifests/node-exporter
+mkdir -p manifests/kube-state-metrics
 
 # Calling gojsontoyaml is optional, but we would like to generate yaml, not json
 jsonnet -J vendor -m manifests \
