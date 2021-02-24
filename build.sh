@@ -16,6 +16,8 @@ mkdir -p manifests/setup
 mkdir -p manifests/node-exporter
 mkdir -p manifests/kube-state-metrics
 mkdir -p manifests/prometheus-operator
+mkdir -p manifests/prometheus
+mkdir -p manifests/alertmanager
 
 # Calling gojsontoyaml is optional, but we would like to generate yaml, not json
 jsonnet -J vendor -m manifests \
