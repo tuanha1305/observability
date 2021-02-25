@@ -10,6 +10,7 @@ function(params)
     secret+: {},
     service+: {
       metadata+: {
+        // to align with the change made at prometheus.libsonnet
         name: cfg.name
       },
     },
