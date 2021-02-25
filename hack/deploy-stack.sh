@@ -2,7 +2,7 @@
 
 ########################################################################
 # Before calling this utility script, make sure your KUBECONFIG is 
-# correctly configured and that the mainfests were generated already.
+# correctly configured and that the manifests were generated already.
 #
 # Your context should be directed to the cluster that you want to deploy
 # the observability stack.

@@ -16,10 +16,4 @@ deploy-stack:
 	./hack/deploy-stack.sh
 
 delete-stack: 
-	kubectl delete \
-	-f manifests/node-exporter/ \
-	-f manifests/kube-state-metrics/ \
-	-f manifests/prometheus-operator/ \
-	-f manifests/prometheus/ \
-	-f manifests/alertmanager \
-	-f manifests/prometheus-operator/setup/
+	./hack/delete-stack.sh
