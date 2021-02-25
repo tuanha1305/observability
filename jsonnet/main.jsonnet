@@ -111,12 +111,6 @@ local inCluster = {
                 },
             },
         },
-
-        
-
-
-
-
     },   
 
 
@@ -126,9 +120,18 @@ local inCluster = {
     prometheusOperator: prometheusOperator($.values.prometheusOperator),
     prometheus: prometheus($.values.prometheus),
     alertmanager: alertmanager($.values.alertmanager),
+
+    namespace: {
+        apiVersion: 'v1',
+        kind: 'Namespace',
+        metadata: {
+            name: $.values.common.namespace,
+      },
+    },
 };
 
 // Creation of YAML manifests
+{ 'namespace': inCluster.namespace} +
 { ['node-exporter/' + name]: inCluster.nodeExporter[name] for name in std.objectFields(inCluster.nodeExporter) } +
 { ['kube-state-metrics/' + name]: inCluster.kubeStateMetrics[name] for name in std.objectFields(inCluster.kubeStateMetrics) } +
 { ['prometheus-operator/' + name]: inCluster.prometheusOperator[name] for name in std.objectFields(inCluster.prometheusOperator) } +

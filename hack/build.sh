@@ -14,7 +14,7 @@ PATH="$(pwd)/tmp/bin:${PATH}"
 rm -rf manifests
 mkdir -p manifests/node-exporter
 mkdir -p manifests/kube-state-metrics
-mkdir -p manifests/prometheus-operator
+mkdir -p manifests/prometheus-operator/setup
 mkdir -p manifests/prometheus
 mkdir -p manifests/alertmanager
 
@@ -23,6 +23,10 @@ jsonnet -J vendor -m manifests \
 --ext-str namespace=${NAMESPACE:-monitoring} \
 --ext-code include_alerting=${INCLUDE_ALERTING:-false} \
 "${1}" | xargs -I{} sh -c 'cat {} | gojsontoyaml > {}.yaml' -- {}
+
+
+# Move Prometheus-Operator CRDs to a diferent directory
+mv manifests/prometheus-operator/*CustomResourceDefinition.yaml manifests/prometheus-operator/setup/
 
 # Make sure to remove json files
 find manifests -type f ! -name '*.yaml' -delete

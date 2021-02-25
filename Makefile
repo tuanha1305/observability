@@ -7,21 +7,13 @@ setup-workspace:
 	jb install github.com/prometheus-operator/kube-prometheus/jsonnet/kube-prometheus@main
 
 build-stack:
-	./build.sh jsonnet/main.jsonnet
+	./hack/build.sh jsonnet/main.jsonnet
 
 build-grafana:
-	./build.sh grafana.jsonnet
+	./hack/build.sh grafana.jsonnet
 
-apply-stack: 
-	# TODO: shell script that creates everything on the right order
-	# while waiting for the right components to be ready
-	kubectl apply \
-	-f manifests/prometheus-operator/deployment.yaml \
-	-f manifests/prometheus-operator/ \
-	-f manifests/node-exporter/ \
-	-f manifests/kube-state-metrics/ \
-	-f manifests/prometheus/ \
-	-f manifests/alertmanager
+deploy-stack: 
+	./hack/deploy-stack.sh
 
 delete-stack: 
 	kubectl delete \
@@ -29,4 +21,5 @@ delete-stack:
 	-f manifests/kube-state-metrics/ \
 	-f manifests/prometheus-operator/ \
 	-f manifests/prometheus/ \
-	-f manifests/alertmanager
+	-f manifests/alertmanager \
+	-f manifests/prometheus-operator/setup/
