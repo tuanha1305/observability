@@ -125,7 +125,9 @@ local inCluster = {
             local allDashboards = $.nodeExporter.mixin.grafanaDashboards + $.prometheus.mixin.grafanaDashboards + $.kubernetes.mixin.grafanaDashboards,
             // Allow-listing dashboards that are going into the product. List needs to be sorted for std.setMember to work
             local includeDashboards = [
+                'apiserver.json',
                 'cluster-total.json',
+                'controller-manager.json',
                 'etcd.json',
                 'k8s-resources-cluster.json',
                 'k8s-resources-namespace.json',
@@ -133,16 +135,24 @@ local inCluster = {
                 'k8s-resources-pod.json',
                 'k8s-resources-workload.json',
                 'k8s-resources-workloads-namespace.json',
+                'kubelet.json',
                 'namespace-by-pod.json',
+                'namespace-by-workload.json',
                 'node-cluster-rsrc-use.json',
                 'node-rsrc-use.json',
+                'nodes.json',
+                'persistentvolumesusage.json',
                 'pod-total.json',
                 'prometheus.json',
+                'prometheus-remote-write.json',
+                'proxy.json',
+                'scheduler.json',
+                'statefulset.json',
+                'workload-total.json',
             ],
             dashboards: {
-                [k]: allDashboards[k]
-                for k in std.objectFields(allDashboards)
-                if std.setMember(k, includeDashboards)
+                [k]: allDashboards[k] for k in std.objectFields(allDashboards)
+                // if std.setMember(k, includeDashboards)
             },
             datasources: [{
                 name: $.values.common.prometheusName,

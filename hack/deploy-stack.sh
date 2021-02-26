@@ -61,7 +61,7 @@ fi
 
 # Even though we might not use Probe and ThanosRuler CRDs
 # the operator need that those CRDs exist. The operator gets stuck
-# and don't deploy anything otherwise
+# and don't deploy anything otherwise.
 #
 # Probe CRD
 kubectl get crd probes.monitoring.coreos.com >/dev/null 2>&1
