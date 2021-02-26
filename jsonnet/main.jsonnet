@@ -4,6 +4,7 @@ local prometheusOperator = import './prometheus-operator.libsonnet';
 local prometheus = import './prometheus.libsonnet';
 local alertmanager = import './alertmanager.libsonnet';
 local grafana = import './grafana.libsonnet';
+local kubernetes = import './kubernetes.libsonnet';
 
 // Configuration shared between all components of the stack
 local commonConfig = {
@@ -121,7 +122,7 @@ local inCluster = {
             image: $.values.common.images['grafana'],
             commonLabels+: $.values.common.commonLabels,
             prometheusName: $.values.common.prometheusName,
-            local allDashboards = $.nodeExporter.mixin.grafanaDashboards + $.prometheus.mixin.grafanaDashboards /*+ $.otherMixins.grafanaDashboards*/,
+            local allDashboards = $.nodeExporter.mixin.grafanaDashboards + $.prometheus.mixin.grafanaDashboards + $.kubernetes.mixin.grafanaDashboards,
             // Allow-listing dashboards that are going into the product. List needs to be sorted for std.setMember to work
             local includeDashboards = [
                 'cluster-total.json',
@@ -153,6 +154,18 @@ local inCluster = {
                 editable: false,
             }],
         },
+
+
+
+
+        kubernetes: {
+            namespace: 'kube-system',
+            prometheusNamespace: $.values.common.namespace,
+            commonLabels+: $.values.common.commonLabels,
+            mixin+: {
+                ruleLabels: $.values.common.ruleLabels,
+            },
+        },
     },   
 
 
@@ -164,6 +177,7 @@ local inCluster = {
     alertmanager: alertmanager($.values.alertmanager),
     grafana: grafana($.values.grafana),
 
+    kubernetes: kubernetes($.values.kubernetes),
     namespace: {
         apiVersion: 'v1',
         kind: 'Namespace',
@@ -180,6 +194,7 @@ local inCluster = {
 { ['prometheus-operator/' + name]: inCluster.prometheusOperator[name] for name in std.objectFields(inCluster.prometheusOperator) } +
 { ['prometheus/' + name]: inCluster.prometheus[name] for name in std.objectFields(inCluster.prometheus) } +
 { ['grafana/' + name]: inCluster.grafana[name] for name in std.objectFields(inCluster.grafana) } +
+{ ['kubernetes/' + name]: inCluster.kubernetes[name] for name in std.objectFields(inCluster.kubernetes) } +
 
 // Optionally include Alertmanager
 // There is no need to exclude alerting rules if they are not routed anywhere

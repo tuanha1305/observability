@@ -22,7 +22,8 @@ kubectl delete \
 	-f manifests/node-exporter/ \
 	-f manifests/kube-state-metrics/ \
 	-f manifests/prometheus/ \
-	-f manifests/alertmanager/
+	-f manifests/alertmanager/ \
+	-f manifests/kubernetes/
 
 kubectl delete -f manifests/prometheus-operator/
 kubectl delete -f manifests/namespace.yaml

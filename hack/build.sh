@@ -18,6 +18,7 @@ mkdir -p manifests/prometheus-operator/setup
 mkdir -p manifests/prometheus
 mkdir -p manifests/alertmanager
 mkdir -p manifests/grafana
+mkdir -p manifests/kubernetes
 
 # Calling gojsontoyaml is optional, but we would like to generate yaml, not json
 jsonnet -J vendor -m manifests \

@@ -102,7 +102,8 @@ kubectl apply \
 	-f manifests/node-exporter/ \
 	-f manifests/kube-state-metrics/ \
 	-f manifests/prometheus/ \
-	-f manifests/alertmanager/
+	-f manifests/alertmanager/ \
+  -f manifests/kubernetes/
 
 # Some final deployment checks
 kubectl rollout status -n ${NAMESPACE:-monitoring} deployment kube-state-metrics
