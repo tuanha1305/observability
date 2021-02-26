@@ -6,14 +6,11 @@ setup-workspace:
 	jb init
 	jb install github.com/prometheus-operator/kube-prometheus/jsonnet/kube-prometheus@main
 
-build-stack:
+build:
 	./hack/build.sh jsonnet/main.jsonnet
 
-build-grafana:
-	./hack/build.sh grafana.jsonnet
+deploy: 
+	./hack/deploy.sh
 
-deploy-stack: 
-	./hack/deploy-stack.sh
-
-delete-stack: 
-	./hack/delete-stack.sh
+delete: 
+	./hack/delete.sh
