@@ -32,6 +32,6 @@ if [[ ${DELETE_CRD:-false} == true ]]; then
   kubectl delete -f manifests/prometheus-operator/setup
 fi
 
-if [[ ${INCLUDE_GRAFANA:-false} == true ]]; then
+if [[ ${IS_PREVIEW_ENV:-false} == true ]]; then
   kubectl delete -f manifests/grafana
 fi

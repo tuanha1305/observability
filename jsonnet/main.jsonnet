@@ -189,16 +189,16 @@ local inCluster = {
 
 // Creation of YAML manifests
 { 'namespace': inCluster.namespace} +
-{ ['node-exporter/' + name]: inCluster.nodeExporter[name] for name in std.objectFields(inCluster.nodeExporter) } +
-{ ['kube-state-metrics/' + name]: inCluster.kubeStateMetrics[name] for name in std.objectFields(inCluster.kubeStateMetrics) } +
-{ ['prometheus-operator/' + name]: inCluster.prometheusOperator[name] for name in std.objectFields(inCluster.prometheusOperator) } +
 { ['prometheus/' + name]: inCluster.prometheus[name] for name in std.objectFields(inCluster.prometheus) } +
-{ ['grafana/' + name]: inCluster.grafana[name] for name in std.objectFields(inCluster.grafana) } +
-{ ['kubernetes/' + name]: inCluster.kubernetes[name] for name in std.objectFields(inCluster.kubernetes) } +
 
-// Optionally include Alertmanager
-// There is no need to exclude alerting rules if they are not routed anywhere
-if std.extVar('include_alerting') then
+// Preview environments are only interested on monitoring gitpod itself.
+// There is no need to include anything more than a namespace and prometheus instance for them.
+if !std.extVar('is_preview_env') then
+  { ['grafana/' + name]: inCluster.grafana[name] for name in std.objectFields(inCluster.grafana) } +
+  { ['kubernetes/' + name]: inCluster.kubernetes[name] for name in std.objectFields(inCluster.kubernetes) } +
+  { ['prometheus-operator/' + name]: inCluster.prometheusOperator[name] for name in std.objectFields(inCluster.prometheusOperator) } +
+  { ['kube-state-metrics/' + name]: inCluster.kubeStateMetrics[name] for name in std.objectFields(inCluster.kubeStateMetrics) } +
+  { ['node-exporter/' + name]: inCluster.nodeExporter[name] for name in std.objectFields(inCluster.nodeExporter) } +
   { ['alertmanager/' + name]: inCluster.alertmanager[name] for name in std.objectFields(inCluster.alertmanager) }
 else 
   {}

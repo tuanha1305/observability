@@ -78,37 +78,42 @@ if [[ $exist == 1 ]]; then
 fi
 
 
-# Create namespace if it doesn't exist.
+# Create namespace if it doesn't exist
+# Preview environment namespaces usually do.
 kubectl get ns ${NAMESPACE:-monitoring} >/dev/null 2>&1
-ns_exists=$?
-if [[ $ns_exists == 1 ]]; then
+exist=$?
+if [[ $exist == 1 ]]; then
   kubectl apply -f manifests/namespace.yaml
 fi
 
-kubectl apply \
-  -f manifests/prometheus-operator/serviceAccount.yaml \
-  -f manifests/prometheus-operator/clusterRole.yaml \
-  -f manifests/prometheus-operator/clusterRoleBinding.yaml \
-  -f manifests/prometheus-operator/deployment.yaml 
+# Prometheus-operator should be present on the cluster prior to setting up
+# an o11y stack to a preview environment.
+if [[ ${IS_PREVIEW_ENV:-false} == false ]]; then
+  kubectl apply \
+    -f manifests/prometheus-operator/serviceAccount.yaml \
+    -f manifests/prometheus-operator/clusterRole.yaml \
+    -f manifests/prometheus-operator/clusterRoleBinding.yaml \
+    -f manifests/prometheus-operator/deployment.yaml 
+  
+  kubectl rollout status -n ${NAMESPACE:-monitoring} deployment prometheus-operator
+  kubectl apply \
+    -f manifests/prometheus-operator/service.yaml \
+    -f manifests/prometheus-operator/serviceMonitor.yaml \
+    -f manifests/prometheus-operator/prometheusRule.yaml
 
-kubectl rollout status -n ${NAMESPACE:-monitoring} deployment prometheus-operator
-kubectl apply \
-  -f manifests/prometheus-operator/service.yaml \
-  -f manifests/prometheus-operator/serviceMonitor.yaml \
-  -f manifests/prometheus-operator/prometheusRule.yaml
 
-# After the operator is succesfully rolled out, everything can be safely deployed
-kubectl apply \
-	-f manifests/node-exporter/ \
-	-f manifests/kube-state-metrics/ \
-	-f manifests/prometheus/ \
-	-f manifests/alertmanager/ \
-  -f manifests/kubernetes/
+  # After the operator is succesfully deployed, everything else can be safely deployed.
+  # If it is a preview environment, almost all of these directories are empty.
+  kubectl apply \
+  	-f manifests/node-exporter/ \
+  	-f manifests/kube-state-metrics/ \
+  	-f manifests/alertmanager/ \
+    -f manifests/kubernetes/ \
+    -f manifests/grafana/
+    kubectl rollout status -n ${NAMESPACE:-monitoring} deployment kube-state-metrics
+    kubectl rollout status -n ${NAMESPACE:-monitoring} daemonset node-exporter
+fi 
 
-# Some final deployment checks
-kubectl rollout status -n ${NAMESPACE:-monitoring} deployment kube-state-metrics
-kubectl rollout status -n ${NAMESPACE:-monitoring} daemonset node-exporter
-
-if [[ ${INCLUDE_GRAFANA:-false} == true ]]; then
-  kubectl apply -f manifests/grafana/
-fi
+# Prometheus is the only common thing that is deployed to preview environments
+# and to full-cluster monitoring.
+kubectl apply -f manifests/prometheus/ 

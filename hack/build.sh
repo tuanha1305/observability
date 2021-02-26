@@ -23,12 +23,14 @@ mkdir -p manifests/kubernetes
 # Calling gojsontoyaml is optional, but we would like to generate yaml, not json
 jsonnet -J vendor -m manifests \
 --ext-str namespace=${NAMESPACE:-monitoring} \
---ext-code include_alerting=${INCLUDE_ALERTING:-false} \
+--ext-code is_preview_env=${IS_PREVIEW_ENV:-false} \
 "${1}" | xargs -I{} sh -c 'cat {} | gojsontoyaml > {}.yaml' -- {}
 
 
 # Move Prometheus-Operator CRDs to a diferent directory
-mv manifests/prometheus-operator/*CustomResourceDefinition.yaml manifests/prometheus-operator/setup/
+if [[ ${IS_PREVIEW_ENV:-false} == false ]]; then
+  mv manifests/prometheus-operator/*CustomResourceDefinition.yaml manifests/prometheus-operator/setup/
+fi
 
 # Make sure to remove json files
 find manifests -type f ! -name '*.yaml' -delete
