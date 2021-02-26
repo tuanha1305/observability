@@ -80,7 +80,7 @@ fi
 
 # Create namespace if it doesn't exist
 # Preview environment namespaces usually do.
-kubectl get ns ${NAMESPACE:-monitoring} >/dev/null 2>&1
+kubectl get ns ${NAMESPACE:-cluster-monitoring} >/dev/null 2>&1
 exist=$?
 if [[ $exist == 1 ]]; then
   kubectl apply -f manifests/namespace.yaml
@@ -95,7 +95,7 @@ if [[ ${IS_PREVIEW_ENV:-false} == false ]]; then
     -f manifests/prometheus-operator/clusterRoleBinding.yaml \
     -f manifests/prometheus-operator/deployment.yaml 
   
-  kubectl rollout status -n ${NAMESPACE:-monitoring} deployment prometheus-operator
+  kubectl rollout status -n ${NAMESPACE:-cluster-monitoring} deployment prometheus-operator
   kubectl apply \
     -f manifests/prometheus-operator/service.yaml \
     -f manifests/prometheus-operator/serviceMonitor.yaml \
@@ -110,8 +110,8 @@ if [[ ${IS_PREVIEW_ENV:-false} == false ]]; then
   	-f manifests/alertmanager/ \
     -f manifests/kubernetes/ \
     -f manifests/grafana/
-    kubectl rollout status -n ${NAMESPACE:-monitoring} deployment kube-state-metrics
-    kubectl rollout status -n ${NAMESPACE:-monitoring} daemonset node-exporter
+    kubectl rollout status -n ${NAMESPACE:-cluster-monitoring} deployment kube-state-metrics
+    kubectl rollout status -n ${NAMESPACE:-cluster-monitoring} daemonset node-exporter
 fi 
 
 # Prometheus is the only common thing that is deployed to preview environments

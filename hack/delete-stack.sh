@@ -18,20 +18,26 @@ set -x
 # One can also optionally keep the CRDs installed, so a future redeploy 
 # is quicker.
 
-kubectl delete \
+if [[ ${IS_PREVIEW_ENV:-false} == false ]]; then
+  kubectl delete \
 	-f manifests/node-exporter/ \
 	-f manifests/kube-state-metrics/ \
-	-f manifests/prometheus/ \
 	-f manifests/alertmanager/ \
+    -f manifests/grafana/ \
 	-f manifests/kubernetes/
 
-kubectl delete -f manifests/prometheus-operator/
+fi
+
+# Prometheus instance and namespace are present for both preview environments
+# and full-cluster o11y stacks.
+kubectl delete manifests/prometheus/
+
+if [[ ${IS_PREVIEW_ENV:-false} == false ]]; then
+  kubectl delete -f manifests/prometheus-operator/
+
+  if [[ ${DELETE_CRD:-false} == true ]]; then
+    kubectl delete -f manifests/prometheus-operator/setup
+  fi
+fi
+
 kubectl delete -f manifests/namespace.yaml
-
-if [[ ${DELETE_CRD:-false} == true ]]; then
-  kubectl delete -f manifests/prometheus-operator/setup
-fi
-
-if [[ ${IS_PREVIEW_ENV:-false} == true ]]; then
-  kubectl delete -f manifests/grafana
-fi
