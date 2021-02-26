@@ -27,6 +27,10 @@ kubectl delete \
 kubectl delete -f manifests/prometheus-operator/
 kubectl delete -f manifests/namespace.yaml
 
-if [[ ${DELETE_CRD:-false} ]]; then
+if [[ ${DELETE_CRD:-false} == true ]]; then
   kubectl delete -f manifests/prometheus-operator/setup
+fi
+
+if [[ ${INCLUDE_GRAFANA:-false} == true ]]; then
+  kubectl delete -f manifests/grafana
 fi

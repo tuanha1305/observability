@@ -3,6 +3,7 @@ local kubeStateMetrics = import './kube-state-metrics.libsonnet';
 local prometheusOperator = import './prometheus-operator.libsonnet';
 local prometheus = import './prometheus.libsonnet';
 local alertmanager = import './alertmanager.libsonnet';
+local grafana = import './grafana.libsonnet';
 
 // Configuration shared between all components of the stack
 local commonConfig = {
@@ -21,6 +22,7 @@ local commonConfig = {
         prometheusOperator: '0.46.0',
         prometheus: '2.25.0',
         alertmanager: '0.21.0',
+        grafana: '7.4.3',
     },
 
     // Used to override default images comming from upstream
@@ -31,6 +33,7 @@ local commonConfig = {
         prometheusOperatorReloader: 'quay.io/prometheus-operator/prometheus-config-reloader:v' + $.versions['prometheusOperator'],
         prometheus: 'quay.io/prometheus/prometheus:v' + $.versions['prometheus'],
         alertmanager: 'quay.io/prometheus/alertmanager:v' + $.versions['alertmanager'],
+        grafana: 'grafana/grafana:v' + $.versions['grafana'],
     },
 
     // Labels to be applied on every component of the stack
@@ -111,6 +114,45 @@ local inCluster = {
                 },
             },
         },
+
+        grafana: {
+            namespace: $.values.common.namespace,
+            version: $.values.common.versions['grafana'],
+            image: $.values.common.images['grafana'],
+            commonLabels+: $.values.common.commonLabels,
+            prometheusName: $.values.common.prometheusName,
+            local allDashboards = $.nodeExporter.mixin.grafanaDashboards + $.prometheus.mixin.grafanaDashboards /*+ $.otherMixins.grafanaDashboards*/,
+            // Allow-listing dashboards that are going into the product. List needs to be sorted for std.setMember to work
+            local includeDashboards = [
+                'cluster-total.json',
+                'etcd.json',
+                'k8s-resources-cluster.json',
+                'k8s-resources-namespace.json',
+                'k8s-resources-node.json',
+                'k8s-resources-pod.json',
+                'k8s-resources-workload.json',
+                'k8s-resources-workloads-namespace.json',
+                'namespace-by-pod.json',
+                'node-cluster-rsrc-use.json',
+                'node-rsrc-use.json',
+                'pod-total.json',
+                'prometheus.json',
+            ],
+            dashboards: {
+                [k]: allDashboards[k]
+                for k in std.objectFields(allDashboards)
+                if std.setMember(k, includeDashboards)
+            },
+            datasources: [{
+                name: $.values.common.prometheusName,
+                type: 'prometheus',
+                access: 'proxy',
+                orgId: 1,
+                url: 'http://' + $.values.common.prometheusName + '.' + $.values.common.namespace + '.svc:9090',
+                version: 1,
+                editable: false,
+            }],
+        },
     },   
 
 
@@ -120,6 +162,7 @@ local inCluster = {
     prometheusOperator: prometheusOperator($.values.prometheusOperator),
     prometheus: prometheus($.values.prometheus),
     alertmanager: alertmanager($.values.alertmanager),
+    grafana: grafana($.values.grafana),
 
     namespace: {
         apiVersion: 'v1',
@@ -136,6 +179,7 @@ local inCluster = {
 { ['kube-state-metrics/' + name]: inCluster.kubeStateMetrics[name] for name in std.objectFields(inCluster.kubeStateMetrics) } +
 { ['prometheus-operator/' + name]: inCluster.prometheusOperator[name] for name in std.objectFields(inCluster.prometheusOperator) } +
 { ['prometheus/' + name]: inCluster.prometheus[name] for name in std.objectFields(inCluster.prometheus) } +
+{ ['grafana/' + name]: inCluster.grafana[name] for name in std.objectFields(inCluster.grafana) } +
 
 // Optionally include Alertmanager
 // There is no need to exclude alerting rules if they are not routed anywhere

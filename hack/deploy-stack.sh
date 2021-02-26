@@ -59,6 +59,25 @@ if [[ $exist == 1 ]]; then
 fi
 
 
+# Even though we might not use Probe and ThanosRuler CRDs
+# the operator need that those CRDs exist. The operator gets stuck
+# and don't deploy anything otherwise
+#
+# Probe CRD
+kubectl get crd probes.monitoring.coreos.com >/dev/null 2>&1
+exist=$?
+if [[ $exist == 1 ]]; then
+  kubectl apply -f manifests/prometheus-operator/setup/0probeCustomResourceDefinition.yaml
+fi
+
+# ThanosRuler CRD
+kubectl get crd thanosrulers.monitoring.coreos.com >/dev/null 2>&1
+exist=$?
+if [[ $exist == 1 ]]; then
+  kubectl apply -f manifests/prometheus-operator/setup/0thanosrulerCustomResourceDefinition.yaml
+fi
+
+
 # Create namespace if it doesn't exist.
 kubectl get ns ${NAMESPACE:-monitoring} >/dev/null 2>&1
 ns_exists=$?
@@ -83,8 +102,12 @@ kubectl apply \
 	-f manifests/node-exporter/ \
 	-f manifests/kube-state-metrics/ \
 	-f manifests/prometheus/ \
-	-f manifests/alertmanager
+	-f manifests/alertmanager/
 
 # Some final deployment checks
 kubectl rollout status -n ${NAMESPACE:-monitoring} deployment kube-state-metrics
 kubectl rollout status -n ${NAMESPACE:-monitoring} daemonset node-exporter
+
+if [[ ${INCLUDE_GRAFANA:-false} == true ]]; then
+  kubectl apply -f manifests/grafana/
+fi

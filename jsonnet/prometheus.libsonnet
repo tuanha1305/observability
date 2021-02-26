@@ -24,7 +24,11 @@ function(params)
       },
   },
   prometheusRule+:{},
-  service+: {},
+  service+: {
+      metadata+: {
+        name: cfg.name
+      },
+  },
   serviceAccount+: {},
   serviceMonitor+: {},
 }
