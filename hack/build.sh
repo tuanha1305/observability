@@ -23,6 +23,8 @@ mkdir -p manifests/kubernetes
 # Calling gojsontoyaml is optional, but we would like to generate yaml, not json
 jsonnet -J vendor -m manifests \
 --ext-str namespace=${NAMESPACE:-cluster-monitoring} \
+--ext-str cluster_name=${CLUSTER_NAME:-cluster01} \
+--ext-str remote_write_url=${REMOTE_WRITE_URL:-''} \
 --ext-code is_preview_env=${IS_PREVIEW_ENV:-false} \
 "${1}" | xargs -I{} sh -c 'cat {} | gojsontoyaml > {}.yaml' -- {}
 

@@ -105,7 +105,9 @@ local inCluster = {
             replicas: 1,
             commonLabels+: $.values.common.commonLabels,
             alertmanagerName: $.values.alertmanager.name,
+            clusterName: std.extVar('cluster_name'),
             namespaces+: [],
+            remoteWriteUrl: std.extVar('remote_write_url'),
             mixin+: {
                 ruleLabels: $.values.common.ruleLabels,
                 _config+: {
