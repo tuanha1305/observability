@@ -7,7 +7,9 @@ local grafana = import './grafana.libsonnet';
 local kubernetes = import './kubernetes.libsonnet';
 
 // Configuration shared between all components of the stack
-local commonConfig = {
+local defaults = {
+
+    clusterName: std.extVar('cluster_name'),
     namespace: std.extVar('namespace'),
     prometheusName: 'prometheus-' + $.namespace,
     alertmanagerName: 'alertmanager-' + $.namespace,
@@ -15,6 +17,8 @@ local commonConfig = {
         role: 'alert-rules',
         prometheus: $.prometheusName
     },
+
+    remoteWriteUrl: std.extVar('remote_write_url'),
 
     // Used to override default version comming from upstream
     versions: {
@@ -45,82 +49,75 @@ local commonConfig = {
 
 local manifests = {
     values+:: {
-        common: commonConfig,
+        default: defaults,
 
         // Configuration of all components
         nodeExporter: {
-            namespace: $.values.common.namespace,
-            version: $.values.common.versions['nodeExporter'],
-            image: $.values.common.images['nodeExporter'],
-            commonLabels+: $.values.common.commonLabels,
+            namespace: $.values.default.namespace,
+            version: $.values.default.versions['nodeExporter'],
+            image: $.values.default.images['nodeExporter'],
+            commonLabels+: $.values.default.commonLabels,
             mixin+: {
-                ruleLabels: $.values.common.ruleLabels,
-                //_config+: {
-                //    diskDeviceSelector: 'device=~"sd.+"',
-                //},
+                ruleLabels: $.values.default.ruleLabels,
             },
         },
 
         kubeStateMetrics: {
-            namespace: $.values.common.namespace,
-            version: $.values.common.versions['kubeStateMetrics'],
-            image: $.values.common.images['kubeStateMetrics'],
-            commonLabels+: $.values.common.commonLabels,
+            namespace: $.values.default.namespace,
+            version: $.values.default.versions['kubeStateMetrics'],
+            image: $.values.default.images['kubeStateMetrics'],
+            commonLabels+: $.values.default.commonLabels,
             mixin+: {
-                ruleLabels: $.values.common.ruleLabels,
-                //_config+: {
-                //    diskDeviceSelector: 'device=~"sd.+"',
-                //},
+                ruleLabels: $.values.default.ruleLabels,
             },
         },
 
         prometheusOperator: {
-            namespace: $.values.common.namespace,
-            version: $.values.common.versions['prometheusOperator'],
-            image: $.values.common.images['prometheusOperator'],
-            configReloaderImage: $.values.common.images['prometheusOperatorReloader'],
-            commonLabels+: $.values.common.commonLabels,
+            namespace: $.values.default.namespace,
+            version: $.values.default.versions['prometheusOperator'],
+            image: $.values.default.images['prometheusOperator'],
+            configReloaderImage: $.values.default.images['prometheusOperatorReloader'],
+            commonLabels+: $.values.default.commonLabels,
             mixin+: {
-                ruleLabels: $.values.common.ruleLabels,
+                ruleLabels: $.values.default.ruleLabels,
             },
         },
 
         alertmanager: {
-            name: $.values.common.alertmanagerName,
-            namespace: $.values.common.namespace,
-            version: $.values.common.versions['alertmanager'],
-            image: $.values.common.images['alertmanager'],
+            name: $.values.default.alertmanagerName,
+            namespace: $.values.default.namespace,
+            version: $.values.default.versions['alertmanager'],
+            image: $.values.default.images['alertmanager'],
             replicas: 1,
-            commonLabels+: $.values.common.commonLabels,
+            commonLabels+: $.values.default.commonLabels,
             mixin+: { 
-                ruleLabels: $.values.common.ruleLabels, 
+                ruleLabels: $.values.default.ruleLabels, 
             },
         },
         
         prometheus: {
-            name: $.values.common.prometheusName,
-            namespace: $.values.common.namespace,
-            version: $.values.common.versions['prometheus'],
-            image: $.values.common.images['prometheus'],
+            name: $.values.default.prometheusName,
+            namespace: $.values.default.namespace,
+            version: $.values.default.versions['prometheus'],
+            image: $.values.default.images['prometheus'],
             replicas: 1,
-            commonLabels+: $.values.common.commonLabels,
+            commonLabels+: $.values.default.commonLabels,
             alertmanagerName: $.values.alertmanager.name,
-            clusterName: std.extVar('cluster_name'),
+            clusterName: $.values.default.clusterName,
+            remoteWriteUrl: $.values.default.remoteWriteUrl,
+            // TODO(arthursens): verify where this 'namespaces' field below is used for.
             namespaces+: [],
-            remoteWriteUrl: std.extVar('remote_write_url'),
             mixin+: {
-                ruleLabels: $.values.common.ruleLabels,
-                _config+: {
-                },
+                ruleLabels: $.values.default.ruleLabels,
             },
         },
 
         grafana: {
-            namespace: $.values.common.namespace,
-            version: $.values.common.versions['grafana'],
-            image: $.values.common.images['grafana'],
-            commonLabels+: $.values.common.commonLabels,
-            prometheusName: $.values.common.prometheusName,
+            namespace: $.values.default.namespace,
+            version: $.values.default.versions['grafana'],
+            image: $.values.default.images['grafana'],
+            commonLabels+: $.values.default.commonLabels,
+            prometheusName: $.values.default.prometheusName,
             local allDashboards = $.nodeExporter.mixin.grafanaDashboards + $.prometheus.mixin.grafanaDashboards + $.kubernetes.mixin.grafanaDashboards,
             // Allow-listing dashboards that are going into the product. List needs to be sorted for std.setMember to work
             local includeDashboards = [
@@ -154,11 +151,11 @@ local manifests = {
                 // if std.setMember(k, includeDashboards)
             },
             datasources: [{
-                name: $.values.common.prometheusName,
+                name: $.values.default.prometheusName,
                 type: 'prometheus',
                 access: 'proxy',
                 orgId: 1,
-                url: 'http://' + $.values.common.prometheusName + '.' + $.values.common.namespace + '.svc:9090',
+                url: 'http://' + $.values.default.prometheusName + '.' + $.values.default.namespace + '.svc:9090',
                 version: 1,
                 editable: false,
             }],
@@ -169,10 +166,10 @@ local manifests = {
 
         kubernetes: {
             namespace: 'kube-system',
-            prometheusNamespace: $.values.common.namespace,
-            commonLabels+: $.values.common.commonLabels,
+            prometheusNamespace: $.values.default.namespace,
+            commonLabels+: $.values.default.commonLabels,
             mixin+: {
-                ruleLabels: $.values.common.ruleLabels,
+                ruleLabels: $.values.default.ruleLabels,
             },
         },
     },   
@@ -191,7 +188,7 @@ local manifests = {
         apiVersion: 'v1',
         kind: 'Namespace',
         metadata: {
-            name: $.values.common.namespace,
+            name: $.values.default.namespace,
       },
     },
 };
