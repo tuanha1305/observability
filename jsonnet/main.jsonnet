@@ -43,7 +43,7 @@ local commonConfig = {
     },
 };
 
-local inCluster = {
+local manifests = {
     values+:: {
         common: commonConfig,
 
@@ -197,17 +197,17 @@ local inCluster = {
 };
 
 // Creation of YAML manifests
-{ 'namespace': inCluster.namespace} +
-{ ['prometheus/' + name]: inCluster.prometheus[name] for name in std.objectFields(inCluster.prometheus) } +
+{ 'namespace': manifests.namespace} +
+{ ['prometheus/' + name]: manifests.prometheus[name] for name in std.objectFields(manifests.prometheus) } +
 
 // Preview environments are only interested on monitoring gitpod itself.
 // There is no need to include anything more than a namespace and prometheus instance for them.
 if !std.extVar('is_preview_env') then
-  { ['grafana/' + name]: inCluster.grafana[name] for name in std.objectFields(inCluster.grafana) } +
-  { ['kubernetes/' + name]: inCluster.kubernetes[name] for name in std.objectFields(inCluster.kubernetes) } +
-  { ['prometheus-operator/' + name]: inCluster.prometheusOperator[name] for name in std.objectFields(inCluster.prometheusOperator) } +
-  { ['kube-state-metrics/' + name]: inCluster.kubeStateMetrics[name] for name in std.objectFields(inCluster.kubeStateMetrics) } +
-  { ['node-exporter/' + name]: inCluster.nodeExporter[name] for name in std.objectFields(inCluster.nodeExporter) } +
-  { ['alertmanager/' + name]: inCluster.alertmanager[name] for name in std.objectFields(inCluster.alertmanager) }
+  { ['grafana/' + name]: manifests.grafana[name] for name in std.objectFields(manifests.grafana) } +
+  { ['kubernetes/' + name]: manifests.kubernetes[name] for name in std.objectFields(manifests.kubernetes) } +
+  { ['prometheus-operator/' + name]: manifests.prometheusOperator[name] for name in std.objectFields(manifests.prometheusOperator) } +
+  { ['kube-state-metrics/' + name]: manifests.kubeStateMetrics[name] for name in std.objectFields(manifests.kubeStateMetrics) } +
+  { ['node-exporter/' + name]: manifests.nodeExporter[name] for name in std.objectFields(manifests.nodeExporter) } +
+  { ['alertmanager/' + name]: manifests.alertmanager[name] for name in std.objectFields(manifests.alertmanager) }
 else 
   {}
