@@ -22,6 +22,10 @@ function(params)
       serviceMonitorCoreDNS+:: {},
       // Controller manager is unacessible on GKE.
       serviceMonitorKubeControllerManager+:: {},
+
+      // TODO(arthursens): Relabel 'instance' with '__meta_kubernetes_pod_node_name' label value
       serviceMonitorKubelet+: {},
+
+      // TODO(arthursens): Evaluate if we really have scheduler metrics on GKE, dashboard is empty
       serviceMonitorKubeScheduler+:{},
   }

@@ -82,9 +82,6 @@ local inCluster = {
             commonLabels+: $.values.common.commonLabels,
             mixin+: {
                 ruleLabels: $.values.common.ruleLabels,
-                _config+: {
-                    //prometheusSelector: 'job=~"prometheus-k8s|prometheus-user-workload"',
-                },
             },
         },
 
