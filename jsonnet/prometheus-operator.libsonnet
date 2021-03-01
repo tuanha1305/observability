@@ -4,7 +4,7 @@ function(params)
   local cfg = params;
   operator(cfg) + {
 
-    // Write extra config to the objects below to override the generated YAMLs 
+    // Write extra config to the objects below to override the generated YAMLs
     clusterRole+: {},
     clusterRoleBinding+: {},
     deployment+: {},
@@ -12,4 +12,4 @@ function(params)
     service+: {},
     serviceAccount+: {},
     serviceMonitor+: {},
-}
+  }

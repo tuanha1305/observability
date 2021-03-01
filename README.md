@@ -1,27 +1,5 @@
 # pluggable-o11y-stack
-Utility scripts that deploys an opinionated observability stack into a kubernetes cluster. 
-
-
-## Setup 
-
-To be able to develop and use this repository, you'll need a couple of tools and binaries installed. Make sure you have [Go](https://golang.org/doc/install) and then run:
-```
-go get github.com/google/go-jsonnet/cmd/jsonnet
-go get github.com/google/go-jsonnet/cmd/jsonnetfmt
-go get github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb
-go get github.com/brancz/gojsontoyaml
-jb init
-jb install github.com/prometheus-operator/kube-prometheus/jsonnet/kube-prometheus@main
-```
-Or:
-```
-make setup-workspace
-```
-Which will run the exact same commands.
-
-Alternatively, you can develop and use this repository on Gitpod, which will create a disposable developer environment with everything installed.
-
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/ArthurSens/pluggable-o11y-stack)
+Utility scripts that deploys an opinionated observability stack into a kubernetes cluster. Focused on monitoring [Gitpod](https://github.com/gitpod-io/gitpod).
 
 ## Building YAML files
 
@@ -72,3 +50,29 @@ export IS_PREVIEW_ENV=true
 export DELETE_CRD=true
 make build && make delete
 ```
+
+## Contributing
+
+### Setup environment
+
+To be able to develop and use this repository, you'll need a couple of tools and binaries installed. Make sure you have [Go](https://golang.org/doc/install) and then run:
+```
+go get github.com/google/go-jsonnet/cmd/jsonnet
+go get github.com/google/go-jsonnet/cmd/jsonnetfmt
+go get github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb
+go get github.com/brancz/gojsontoyaml
+jb init
+jb install github.com/prometheus-operator/kube-prometheus/jsonnet/kube-prometheus@main
+```
+Or:
+```
+make setup-workspace
+```
+Which will run the exact same commands.
+
+Alternatively, you can develop and use this repository on Gitpod, which will create a disposable developer environment with everything installed.
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/ArthurSens/pluggable-o11y-stack)
+
+
+> Please remember to always run `make fmt` before sending a PR!!

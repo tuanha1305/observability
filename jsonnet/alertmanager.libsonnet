@@ -2,18 +2,18 @@ local alertmanager = import 'github.com/prometheus-operator/kube-prometheus/json
 
 function(params)
   local cfg = params;
-  
+
   alertmanager(cfg) {
-    // Write extra config to the objects below to override the generated YAMLs 
+    // Write extra config to the objects below to override the generated YAMLs
     alertmanager+: {},
     prometheusRule+: {},
     secret+: {},
     service+: {
       metadata+: {
         // to align with the change made at prometheus.libsonnet
-        name: cfg.name
+        name: cfg.name,
       },
     },
     serviceAccount+: {},
     serviceMonitor+: {},
-}
+  }

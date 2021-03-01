@@ -5,7 +5,7 @@ function(params)
   grafana(cfg) {
 
     serviceMonitor+: {},
-    serviceAccount+: {},    
+    serviceAccount+: {},
     service+: {},
     deployment+: {},
-}
+  }
