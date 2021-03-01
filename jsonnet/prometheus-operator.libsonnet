@@ -27,8 +27,66 @@ function(params)
   operator(cfg) + {
 
     // Write extra config to the objects below to override the generated YAMLs
-    clusterRole+: {},
+    // PodSecurityPolicies are not implemented on kube-prometheus yet. So we need to create them ourselves.
+    // Or we could contribute to their project :)
+    // See: https://github.com/prometheus-operator/kube-prometheus/issues/572
     clusterRoleBinding+: {},
+    clusterRole+: {
+      rules+: [{
+        apiGroups: ['policy'],
+        resources: ['podsecuritypolicies'],
+        verbs: ['use'],
+        resourceNames: ['prometheus-operator-psp'],
+      }],
+    },
+    podSecurityPolicy: {
+      apiVersion: 'policy/v1beta1',
+      kind: 'PodSecurityPolicy',
+      metadata: {
+        name: 'prometheus-operator-psp',
+      },
+      spec: {
+        allowPrivilegeEscalation: false,
+        privileged: false,
+        hostNetwork: false,
+        hostPID: false,
+        runAsUser: {
+          rule: 'MustRunAsNonRoot',
+        },
+        seLinux: {
+          rule: 'RunAsAny',
+        },
+        hostPorts: [
+          {
+            max: 65535,
+            min: 1,
+          },
+        ],
+        fsGroup: {
+          ranges: [
+            {
+              max: 65535,
+              min: 1,
+            },
+          ],
+          rule: 'MustRunAs',
+        },
+        supplementalGroups: {
+          ranges: [
+            {
+              max: 65535,
+              min: 1,
+            },
+          ],
+          rule: 'MustRunAs',
+        },
+        volumes: [
+          'secret',
+        ],
+      },
+    },
+
+
     deployment+: {},
     prometheusRule+: {},
     service+: {},

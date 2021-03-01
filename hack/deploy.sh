@@ -89,20 +89,10 @@ fi
 # Prometheus-operator should be present on the cluster prior to setting up
 # an o11y stack to a preview environment.
 if [[ ${IS_PREVIEW_ENV:-false} == false ]]; then
-  kubectl apply \
-    -f manifests/prometheus-operator/serviceAccount.yaml \
-    -f manifests/prometheus-operator/clusterRole.yaml \
-    -f manifests/prometheus-operator/clusterRoleBinding.yaml \
-    -f manifests/prometheus-operator/deployment.yaml 
-  
+  kubectl apply -f manifests/prometheus-operator/
   kubectl rollout status -n ${NAMESPACE:-cluster-monitoring} deployment prometheus-operator
-  kubectl apply \
-    -f manifests/prometheus-operator/service.yaml \
-    -f manifests/prometheus-operator/serviceMonitor.yaml \
-    -f manifests/prometheus-operator/prometheusRule.yaml
 
-
-  # After the operator is succesfully deployed, everything else can be safely deployed.
+  # After the operator is succesfully deployed, everything else can be safely deployed as well.
   # If it is a preview environment, almost all of these directories are empty.
   kubectl apply \
   	-f manifests/node-exporter/ \
@@ -110,7 +100,9 @@ if [[ ${IS_PREVIEW_ENV:-false} == false ]]; then
   	-f manifests/alertmanager/ \
     -f manifests/kubernetes/ \
     -f manifests/grafana/
+
     kubectl rollout status -n ${NAMESPACE:-cluster-monitoring} deployment kube-state-metrics
+    kubectl rollout status -n ${NAMESPACE:-cluster-monitoring} deployment grafana
     kubectl rollout status -n ${NAMESPACE:-cluster-monitoring} daemonset node-exporter
 fi 
 
