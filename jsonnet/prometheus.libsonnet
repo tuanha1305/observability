@@ -3,15 +3,15 @@ local prometheus = (import 'github.com/prometheus-operator/kube-prometheus/jsonn
 /**
  * Creates a set of YAML files necessary to run a Prometheus instance using Prometheus-Operator.
  *
- * @param clusterName The name of the cluster where the stack is being deployed to. An external label `cluster` will be configured with the provided value.
- * @param name The name used to create the Prometheus Kubernetes resource.
- * @param namespace The namespace where the Prometheus resource will be deployed to.
- * @param version will populate Prometheus-Operator 'version' field.
- * @param image The Prometheus image used to deploy Prometheus.
- * @param replicas The amount of Prometheus replicas.
- * @param alermanagerName The name of the Alertmanager resource used to route alerts to. If left empty, alerting won't be configured.
- * @param remoteWriteUrl The URL of a remote write endpoint where metrics are going to be sent to. If left empty, remote_write won't be configured.
- * @param commonLabels Labels that will be added to all Prometheus related resources.
+ * @param clusterName(Required) The name of the cluster where the stack is being deployed to. An external label `cluster` will be configured with the provided value.
+ * @param name(Required) The name used to create the Prometheus Kubernetes resource.
+ * @param namespace(Required) The namespace where the Prometheus resource will be deployed to.
+ * @param version(Required) will populate Prometheus-Operator 'version' field.
+ * @param image(Required) The Prometheus image used to deploy Prometheus.
+ * @param replicas(Required) The amount of Prometheus replicas.
+ * @param alermanagerName(Optional) The name of the Alertmanager resource used to route alerts to. If left empty, alerting won't be configured.
+ * @param remoteWriteUrl(Optional) The URL of a remote write endpoint where metrics are going to be sent to. If left empty, remote_write won't be configured.
+ * @param commonLabels(Optional) Labels that will be added to all Prometheus related resources.
  *
  * @method prometheus(params) Creates a Prometheus object.
  */
