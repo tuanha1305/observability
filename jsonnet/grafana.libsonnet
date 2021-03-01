@@ -79,7 +79,9 @@ function(params)
           rule: 'MustRunAs',
         },
         volumes: [
-          'configmap',
+          'configMap',
+          'secret',
+          'emptyDir'
         ],
       },
     },
@@ -92,8 +94,12 @@ function(params)
     },
     service+: {},
     deployment+: {
-        spec+: {
+      spec+: {
+        template+: {
+          spec+: {
             serviceAccountName: 'grafana-' + cfg.namespace,
+          },
         },
+      },
     },
   }
