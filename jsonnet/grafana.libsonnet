@@ -81,7 +81,7 @@ function(params)
         volumes: [
           'configMap',
           'secret',
-          'emptyDir'
+          'emptyDir',
         ],
       },
     },

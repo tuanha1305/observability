@@ -17,7 +17,6 @@ local defaults = {
   version: error 'must provide version',
   image: error 'must provide image',
 
-  commonLabels: {},
 };
 
 function(params)
@@ -26,8 +25,82 @@ function(params)
   nodeExporter(cfg) {
 
     // Write extra config to the objects below to override the generated YAMLs
-    clusterRole+: {},
+    clusterRole+: {
+      rules+: [{
+        apiGroups: ['policy'],
+        resources: ['podsecuritypolicies'],
+        verbs: ['use'],
+        resourceNames: ['node-exporter-psp'],
+      }],
+    },
     clusterRoleBinding+: {},
+    podSecurityPolicy: {
+      apiVersion: 'policy/v1beta1',
+      kind: 'PodSecurityPolicy',
+      metadata: {
+        name: 'node-exporter-psp',
+      },
+      spec: {
+        allowedHostPaths: [
+          {
+            pathPrefix: '/proc',
+            readOnly: true,
+          },
+          {
+            pathPrefix: '/sys',
+            readOnly: true,
+          },
+          {
+            pathPrefix: '/',
+            readOnly: true,
+          },
+        ],
+        allowPrivilegeEscalation: false,
+        fsGroup: {
+          ranges: [
+            {
+              max: 65535,
+              min: 1,
+            },
+          ],
+          rule: 'MustRunAs',
+        },
+        hostIPC: false,
+        hostNetwork: true,
+        hostPID: true,
+        hostPorts: [
+          {
+            max: 65535,
+            min: 1,
+          },
+        ],
+        privileged: false,
+        readOnlyRootFilesystem: false,
+        requiredDropCapabilities: [
+          'ALL',
+        ],
+        runAsUser: {
+          rule: 'RunAsAny',
+        },
+        seLinux: {
+          rule: 'RunAsAny',
+        },
+        supplementalGroups: {
+          ranges: [
+            {
+              max: 65535,
+              min: 1,
+            },
+          ],
+          rule: 'MustRunAs',
+        },
+        volumes: [
+          'configMap',
+          'hostPath',
+          'secret',
+        ],
+      },
+    },
     daemonset+: {
       spec+: {
         updateStrategy+: {

@@ -17,7 +17,6 @@ local defaults = {
   version: error 'must provide version',
   image: error 'must provide image',
 
-  commonLabels: {},
 };
 
 function(params)
@@ -25,8 +24,66 @@ function(params)
 
   kubeStateMetrics(cfg) + {
     // Write extra config to the objects below to override the generated YAMLs
-    clusterRole+: {},
+    clusterRole+: {
+      rules+: [{
+        apiGroups: ['policy'],
+        resources: ['podsecuritypolicies'],
+        verbs: ['use'],
+        resourceNames: ['kube-state-metrics-psp'],
+      }],
+    },
     clusterRoleBinding+: {},
+    podSecurityPolicy: {
+      apiVersion: 'policy/v1beta1',
+      kind: 'PodSecurityPolicy',
+      metadata: {
+        name: 'kube-state-metrics-psp',
+      },
+      spec: {
+        allowPrivilegeEscalation: false,
+        fsGroup: {
+          ranges: [
+            {
+              max: 65535,
+              min: 1,
+            },
+          ],
+          rule: 'MustRunAs',
+        },
+        hostIPC: false,
+        hostNetwork: true,
+        hostPID: true,
+        hostPorts: [
+          {
+            max: 65535,
+            min: 1,
+          },
+        ],
+        privileged: false,
+        readOnlyRootFilesystem: false,
+        requiredDropCapabilities: [
+          'ALL',
+        ],
+        runAsUser: {
+          rule: 'RunAsAny',
+        },
+        seLinux: {
+          rule: 'RunAsAny',
+        },
+        supplementalGroups: {
+          ranges: [
+            {
+              max: 65535,
+              min: 1,
+            },
+          ],
+          rule: 'MustRunAs',
+        },
+        volumes: [
+          'secret',
+        ],
+      },
+    },
     deployment+: {},
     prometheusRule+: {},
     service+: {},
