@@ -43,8 +43,64 @@ function(params)
         prometheusName: cfg.namespace,
       },
     },
-    clusterRole+: {},
+    clusterRole+: {
+      rules+: [{
+        apiGroups: ['policy'],
+        resources: ['podsecuritypolicies'],
+        verbs: ['use'],
+        resourceNames: ['prometheus-psp'],
+      }],
+    },
     clusterRoleBinding+: {},
+    podSecurityPolicy: {
+      apiVersion: 'policy/v1beta1',
+      kind: 'PodSecurityPolicy',
+      metadata: {
+        name: 'prometheus-psp',
+      },
+      spec: {
+        allowPrivilegeEscalation: false,
+        privileged: false,
+        hostNetwork: false,
+        hostPID: false,
+        runAsUser: {
+          rule: 'MustRunAsNonRoot',
+        },
+        seLinux: {
+          rule: 'RunAsAny',
+        },
+        hostPorts: [
+          {
+            max: 65535,
+            min: 1,
+          },
+        ],
+        fsGroup: {
+          ranges: [
+            {
+              max: 65535,
+              min: 1,
+            },
+          ],
+          rule: 'MustRunAs',
+        },
+        supplementalGroups: {
+          ranges: [
+            {
+              max: 65535,
+              min: 1,
+            },
+          ],
+          rule: 'MustRunAs',
+        },
+        volumes: [
+          'configMap',
+          'secret',
+          'emptyDir',
+        ],
+      },
+    },
+
     prometheus+: {
       spec+: {
                externalLabels+: {
