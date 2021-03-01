@@ -6,19 +6,30 @@ local alertmanager = import './alertmanager.libsonnet';
 local grafana = import './grafana.libsonnet';
 local kubernetes = import './kubernetes.libsonnet';
 
-// Configuration shared between all components of the stack
-local defaults = {
-
+local externalVars = {
+    // Provided via jsonnet CLI
     clusterName: std.extVar('cluster_name'),
     namespace: std.extVar('namespace'),
+    remoteWriteUrl: std.extVar('remote_write_url'),
+    isPreviewEnv: std.extVar('is_preview_env'),
+};
+
+// Configuration shared between all components of the stack
+local defaults = {
+    ext: externalVars,
+
+    clusterName: $.ext.clusterName,
+    namespace: $.ext.namespace,
+
     prometheusName: 'prometheus-' + $.namespace,
     alertmanagerName: 'alertmanager-' + $.namespace,
+    // TODO(arthursens): move ruleLabels to libsonnets.
     ruleLabels: {
         role: 'alert-rules',
         prometheus: $.prometheusName
     },
+    remoteWriteUrl: $.ext.remoteWriteUrl,
 
-    remoteWriteUrl: std.extVar('remote_write_url'),
 
     // Used to override default version comming from upstream
     versions: {
@@ -199,7 +210,7 @@ local manifests = {
 
 // Preview environments are only interested on monitoring gitpod itself.
 // There is no need to include anything more than a namespace and prometheus instance for them.
-if !std.extVar('is_preview_env') then
+if !externalVars.isPreviewEnv then
   { ['grafana/' + name]: manifests.grafana[name] for name in std.objectFields(manifests.grafana) } +
   { ['kubernetes/' + name]: manifests.kubernetes[name] for name in std.objectFields(manifests.kubernetes) } +
   { ['prometheus-operator/' + name]: manifests.prometheusOperator[name] for name in std.objectFields(manifests.prometheusOperator) } +
