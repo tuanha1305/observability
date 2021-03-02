@@ -90,9 +90,9 @@ function(params)
     },
 
     alertmanager+: {
-        spec+: {
-            serviceAccountName: 'alertmanager-' + cfg.namespace,
-        },
+      spec+: {
+        serviceAccountName: 'alertmanager-' + cfg.namespace,
+      },
     },
     prometheusRule+: {},
     secret+: {},
