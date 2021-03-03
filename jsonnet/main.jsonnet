@@ -1,5 +1,5 @@
-local alertmanager = import './alertmanager.libsonnet';
 local grafana = import './grafana.libsonnet';
+local alertmanager = import './homemade-alertmanager.libsonnet';
 local kubeStateMetrics = import './kube-state-metrics.libsonnet';
 local kubernetes = import './kubernetes.libsonnet';
 local nodeExporter = import './node-exporter.libsonnet';
@@ -11,6 +11,8 @@ local externalVars = {
   clusterName: std.extVar('cluster_name'),
   namespace: std.extVar('namespace'),
   remoteWriteUrl: std.extVar('remote_write_url'),
+  slack_webhook_url: std.extVar('slack_webhook_url'),
+  channel: std.extVar('channel'),
   isPreviewEnv: std.extVar('is_preview_env'),
 };
 
@@ -23,6 +25,9 @@ local defaults = {
 
   prometheusName: 'prometheus-' + $.namespace,
   alertmanagerName: 'alertmanager-' + $.namespace,
+  slack_webhook_url: $.ext.slack_webhook_url,
+  channel: $.ext.channel,
+
   // TODO(arthursens): move ruleLabels to libsonnets.
   ruleLabels: {
     role: 'alert-rules',
@@ -101,6 +106,8 @@ local manifests = {
       image: $.values.default.images.alertmanager,
       replicas: 1,
       commonLabels+: $.values.default.commonLabels,
+      slack_webhook_url: $.values.default.slack_webhook_url,
+      channel: $.values.default.channel,
       mixin+: {
         ruleLabels: $.values.default.ruleLabels,
       },
