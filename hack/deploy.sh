@@ -98,8 +98,7 @@ if [[ ${IS_PREVIEW_ENV:-false} == false ]]; then
   	-f manifests/node-exporter/ \
   	-f manifests/kube-state-metrics/ \
   	-f manifests/alertmanager/ \
-    -f manifests/kubernetes/ \
-    -f manifests/grafana/
+    -f manifests/kubernetes/ 
 
     kubectl rollout status -n ${NAMESPACE:-cluster-monitoring} deployment kube-state-metrics
     kubectl rollout status -n ${NAMESPACE:-cluster-monitoring} deployment grafana
@@ -108,4 +107,5 @@ fi
 
 # Prometheus is the only common thing that is deployed to preview environments
 # and to full-cluster monitoring.
-kubectl apply -f manifests/prometheus/ 
+kubectl apply -f manifests/prometheus/ \
+    -f manifests/grafana/

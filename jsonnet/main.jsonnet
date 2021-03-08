@@ -213,11 +213,11 @@ local manifests = {
 // Creation of YAML manifests
 { namespace: manifests.namespace } +
 { ['prometheus/' + name]: manifests.prometheus[name] for name in std.objectFields(manifests.prometheus) } +
+{ ['grafana/' + name]: manifests.grafana[name] for name in std.objectFields(manifests.grafana) } +
 
 // Preview environments are only interested on monitoring gitpod itself.
 // There is no need to include anything more than a namespace and prometheus instance for them.
 if !externalVars.isPreviewEnv then
-  { ['grafana/' + name]: manifests.grafana[name] for name in std.objectFields(manifests.grafana) } +
   { ['kubernetes/' + name]: manifests.kubernetes[name] for name in std.objectFields(manifests.kubernetes) } +
   { ['prometheus-operator/' + name]: manifests.prometheusOperator[name] for name in std.objectFields(manifests.prometheusOperator) } +
   { ['kube-state-metrics/' + name]: manifests.kubeStateMetrics[name] for name in std.objectFields(manifests.kubeStateMetrics) } +
