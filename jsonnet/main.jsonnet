@@ -23,8 +23,8 @@ local defaults = {
   clusterName: $.ext.clusterName,
   namespace: $.ext.namespace,
 
-  prometheusName: 'prometheus-' + $.namespace,
-  alertmanagerName: 'alertmanager-' + $.namespace,
+  prometheusName: 'prometheus',
+  alertmanagerName: 'alertmanager',
   slack_webhook_url: $.ext.slack_webhook_url,
   channel: $.ext.channel,
 

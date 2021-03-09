@@ -18,6 +18,7 @@
 local defaults = {
   local defaults = self,
 
+  name: error 'must provide name',
   namespace: error 'must provide namespace',
   version: error 'must provide version',
   image: error 'must provide image',
@@ -101,8 +102,8 @@ function(params) {
 
   mixin:: (import 'github.com/prometheus/alertmanager/doc/alertmanager-mixin/mixin.libsonnet') {
     _config+:: {
-      alertmanagerName: 'alertmanager-' + cfg.namespace,
-      alertmanagerSelector: 'job="alertmanager-' + cfg.namespace + '"',
+      alertmanagerName: cfg.name,
+      alertmanagerSelector: 'job="' + cfg.name + '"',
     },
   },
 
@@ -110,9 +111,9 @@ function(params) {
     apiVersion: 'apps/v1',
     kind: 'StatefulSet',
     metadata: {
-      name: 'alertmanager-' + cfg.namespace,
+      name: cfg.name,
       namespace: cfg.namespace,
-      labels: { alertmanager: 'alertmanager-' + cfg.namespace } + cfg.commonLabels,
+      labels: { alertmanager: cfg.name } + cfg.commonLabels,
     },
     spec: {
       replicas: cfg.replicas,
@@ -126,7 +127,7 @@ function(params) {
       serviceName: 'alertmanager-operated',
       template: {
         metadata: {
-          labels: { alertmanager: 'alertmanager-' + cfg.namespace } + cfg.commonLabels,
+          labels: { alertmanager: cfg.name } + cfg.commonLabels,
         },
         spec: {
           containers: [
@@ -152,7 +153,7 @@ function(params) {
                 '--cluster.listen-address=',
                 '--web.listen-address=:9093',
                 '--web.route-prefix=/',
-                '--cluster.peer=alertmanager-alertmanager-' + cfg.namespace + '-0.alertmanager-operated:9094',
+                '--cluster.peer=' + cfg.name + '-0.alertmanager-operated:9094',
                 '--cluster.reconnect-timeout=5m',
               ],
               ports: [
@@ -342,7 +343,7 @@ function(params) {
     apiVersion: 'v1',
     kind: 'ServiceAccount',
     metadata: {
-      labels: { alertmanager: 'alertmanager-' + cfg.namespace } + cfg.commonLabels,
+      labels: { alertmanager: cfg.name } + cfg.commonLabels,
       name: 'alertmanager-' + cfg.namespace,
       namespace: cfg.namespace,
     },
@@ -370,7 +371,7 @@ function(params) {
     metadata: {
       name: 'alertmanager-' + cfg.namespace + '-config',
       namespace: cfg.namespace,
-      labels: { alertmanager: 'alertmanager-' + cfg.namespace } + cfg.commonLabels,
+      labels: { alertmanager: cfg.name } + cfg.commonLabels,
     },
     stringData: {
       'alertmanager.yaml': if std.type(cfg.config) == 'object'
@@ -397,9 +398,9 @@ function(params) {
     apiVersion: 'v1',
     kind: 'Service',
     metadata: {
-      name: 'alertmanager-' + cfg.namespace,
+      name: cfg.name,
       namespace: cfg.namespace,
-      labels: { alertmanager: 'alertmanager-' + cfg.namespace } + cfg.commonLabels,
+      labels: { alertmanager: cfg.name } + cfg.commonLabels,
     },
     spec: {
       ports: [{
@@ -407,7 +408,7 @@ function(params) {
         port: 9093,
         targetPort: 'web',
       }],
-      selector: { alertmanager: 'alertmanager-' + cfg.namespace } + cfg.selectorLabels,
+      selector: { alertmanager: cfg.name } + cfg.selectorLabels,
       sessionAffinity: 'ClientIP',
     },
   },
@@ -416,13 +417,13 @@ function(params) {
     apiVersion: 'monitoring.coreos.com/v1',
     kind: 'ServiceMonitor',
     metadata: {
-      name: 'alertmanager-' + cfg.namespace,
+      name: cfg.name,
       namespace: cfg.namespace,
-      labels: { alertmanager: 'alertmanager-' + cfg.namespace } + cfg.commonLabels,
+      labels: { alertmanager: cfg.name } + cfg.commonLabels,
     },
     spec: {
       selector: {
-        matchLabels: { alertmanager: 'alertmanager-' + cfg.namespace } + cfg.selectorLabels,
+        matchLabels: { alertmanager: cfg.name } + cfg.selectorLabels,
       },
       endpoints: [
         { port: 'web', interval: '30s' },
