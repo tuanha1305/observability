@@ -24,6 +24,9 @@ local kp =
     prometheus+: {
       prometheus+: {
         spec+: {
+          externalLabels: {
+            cluster: externalVars.clusterName,
+          },
           replicas: 1,
         },
       },
