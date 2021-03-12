@@ -1,14 +1,34 @@
-// Preview environments are supposed to gather metrics only from the Gitpod
-// installation it is responsible for. There is no need to add dashboards that aren't
-// Prometheus or Gitpod related.
-
+// The preview-environment addon provides json snippets that are specific for preview environment installations.
 {
   values+:: {
     prometheus+: {
       name: 'preview-environment',
+      namespaces: [std.extVar('namespace')],
     },
     grafana+: {
       dashboards: $.prometheus.mixin.grafanaDashboards,
+    },
+  },
+
+  prometheus+: {
+    prometheus+: {
+      spec+: {
+        serviceMonitorNamespaceSelector: {
+          matchLabels: {
+            namespace: std.extVar('namespace'),
+          },
+        },
+      },
+    },
+  },
+
+  kubePrometheus+: {
+    namespace+: {
+      metadata+: {
+        labels+: {
+          namespace: std.extVar('namespace'),
+        },
+      },
     },
   },
 }

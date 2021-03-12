@@ -86,6 +86,9 @@ if [[ $exist == 1 ]]; then
   kubectl apply -f manifests/namespace.yaml
 fi
 
+# 
+kubectl apply -f manifests/podsecuritypolicy-restricted.yaml
+
 # Prometheus-operator should be present on the cluster prior to setting up
 # an o11y stack to a preview environment.
 if [[ ${IS_PREVIEW_ENV:-false} == false ]]; then
@@ -101,7 +104,6 @@ if [[ ${IS_PREVIEW_ENV:-false} == false ]]; then
     -f manifests/kubernetes/ 
 
     kubectl rollout status -n ${NAMESPACE:-cluster-monitoring} deployment kube-state-metrics
-    kubectl rollout status -n ${NAMESPACE:-cluster-monitoring} deployment grafana
     kubectl rollout status -n ${NAMESPACE:-cluster-monitoring} daemonset node-exporter
 fi 
 
@@ -109,3 +111,5 @@ fi
 # and to full-cluster monitoring.
 kubectl apply -f manifests/prometheus/ \
     -f manifests/grafana/
+
+kubectl rollout status -n ${NAMESPACE:-cluster-monitoring} deployment grafana
