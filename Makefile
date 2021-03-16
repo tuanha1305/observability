@@ -9,6 +9,9 @@ setup-workspace:
 build:
 	./hack/build.sh main.jsonnet
 
+build-monitoring-central:
+	./hack/build.sh monitoring-central.jsonnet
+
 deploy: 
 	./hack/deploy.sh
 

@@ -28,7 +28,7 @@ jsonnet -J vendor -m manifests \
 --ext-str slack_webhook_url=${SLACK_WEBHOOK_URL:-""} \
 --ext-str slack_channel=${SLACK_CHANNEL:-""} \
 --ext-str grafana_ingress_node_port=${GRAFANA_INGRESS_NODE_PORT} \
---ext-str dns_name=${DNS_NAME} \
+--ext-str dns_name=${DNS_NAME:-''} \
 --ext-str gcp_external_ip_address=${GCP_EXTERNAL_IP_ADDRESS} \
 --ext-str IAP_client_id=${IAP_CLIENT_ID} \
 --ext-str IAP_client_secret=${IAP_CLIENT_SECRET} \
@@ -37,7 +37,7 @@ jsonnet -J vendor -m manifests \
 
 
 # Move Prometheus-Operator CRDs to a diferent directory
-if [[ ${IS_PREVIEW_ENV:-false} == false ]]; then
+if [[ -f manifests/prometheus-operator/0prometheusCustomResourceDefinition.yaml ]]; then
   mv manifests/prometheus-operator/*CustomResourceDefinition.yaml manifests/prometheus-operator/setup/
 fi
 
