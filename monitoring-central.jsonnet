@@ -1,3 +1,5 @@
+local gitpod = import './components/gitpod/gitpod.libsonnet';
+
 local externalVars = {
   // Provided via jsonnet CLI
   namespace: std.extVar('namespace'),
@@ -11,6 +13,9 @@ local kp =
     values+:: {
       common+: {
         namespace: externalVars.namespace,
+      },
+      grafana+: {
+        dashboards+: $.gitpod.mixin.grafanaDashboards,
       },
     },
   }

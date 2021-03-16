@@ -24,7 +24,8 @@ if [[ ${IS_PREVIEW_ENV:-false} == false ]]; then
 	-f manifests/kube-state-metrics/ \
 	-f manifests/alertmanager/ \
     -f manifests/grafana/ \
-	-f manifests/kubernetes/
+	-f manifests/kubernetes/ \
+    -f manifests/gitpod
 
 fi
 
