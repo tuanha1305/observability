@@ -11,7 +11,7 @@ local externalVars = {
 local kp =
   (import 'kube-prometheus/main.libsonnet') +
   (import 'kube-prometheus/platforms/gke.libsonnet') +
-  (import 'kube-prometheus/addons/podsecuritypolicies.libsonnet') +
+  //   (import 'kube-prometheus/addons/podsecuritypolicies.libsonnet') +
   {
     values+:: {
       common+: {
@@ -45,11 +45,11 @@ local kp =
 local manifests = kp +
                   (if externalVars.remoteWriteUrl != '' then (import './addons/remote-write.libsonnet') else {}) +
                   (if externalVars.slackWebhookUrl != '' then (import './addons/slack-alerting.libsonnet') else {}) +
-                  (if externalVars.isPreviewEnv then (import './addons/preview-env.libsonnet') else {})
+                  (if externalVars.isPreviewEnv then (import './addons/preview-env.libsonnet') else (import './addons/cluster-monitoring.libsonnet'))
 ;
 
 { namespace: manifests.kubePrometheus.namespace } +
-{ 'podsecuritypolicy-restricted': manifests.restrictedPodSecurityPolicy } +
+// { 'podsecuritypolicy-restricted': manifests.restrictedPodSecurityPolicy } +
 { ['grafana/' + name]: manifests.grafana[name] for name in std.objectFields(manifests.grafana) } +
 { ['prometheus/' + name]: manifests.prometheus[name] for name in std.objectFields(manifests.prometheus) } +
 // Generic alerting rules, not related to a specific exporter.
