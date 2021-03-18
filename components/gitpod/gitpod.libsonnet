@@ -174,7 +174,7 @@ function(params) {
     },
   },
 
-// Not necessary as credit-watcher doesn't expose metrics
+  // Not necessary as credit-watcher doesn't expose metrics
   creditWatcherService:: {},
   creditWatcherServiceMonitor:: {},
 
@@ -190,7 +190,7 @@ function(params) {
   dbSyncService:: {},
   dbSyncServiceMonitor:: {},
 
-    imageBuilderService: {
+  imageBuilderService: {
     apiVersion: 'v1',
     kind: 'Service',
     metadata: {
@@ -288,7 +288,7 @@ function(params) {
     },
   },
 
-// Not necessary as proxy doesn't expose metrics
+  // Not necessary as proxy doesn't expose metrics
   proxyService:: {},
   proxyServiceMonitor:: {},
 
@@ -391,7 +391,7 @@ function(params) {
     },
   },
 
-   wsDaemonService: {
+  wsDaemonService: {
     apiVersion: 'v1',
     kind: 'Service',
     metadata: {
@@ -440,7 +440,7 @@ function(params) {
     },
   },
 
-    wsManagerService: {
+  wsManagerService: {
     apiVersion: 'v1',
     kind: 'Service',
     metadata: {
