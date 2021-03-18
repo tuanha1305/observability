@@ -1,63 +1,66 @@
-local externalVars = {
-  // Provided via jsonnet CLI
-  clusterName: std.extVar('cluster_name'),
-  namespace: std.extVar('namespace'),
-  remoteWriteUrl: std.extVar('remote_write_url'),
-  slackWebhookUrl: std.extVar('slack_webhook_url'),
-  slackChannel: std.extVar('slack_channel'),
-  isPreviewEnv: std.extVar('is_preview_env'),
-};
+local gitpod = import './components/gitpod/gitpod.libsonnet';
 
 local kp =
   (import 'kube-prometheus/main.libsonnet') +
   (import 'kube-prometheus/platforms/gke.libsonnet') +
-  //   (import 'kube-prometheus/addons/podsecuritypolicies.libsonnet') +
+  (import 'kube-prometheus/addons/podsecuritypolicies.libsonnet') +
   {
     values+:: {
       common+: {
-        namespace: externalVars.namespace,
+        namespace: std.extVar('namespace'),
+      },
+      gitpodParams: {
+        namespace: std.extVar('namespace'),
+      },
+
+      prometheus+: {
+        replicas: 1,
+      },
+
+      alertmanager+: {
+        replicas: 1,
+      },
+
+      grafana+: {
+        dashboards+: $.gitpod.mixin.grafanaDashboards,
       },
     },
   } +
-  // Scaling down to 1 replica
+  // Unfortunately there is no way to change external Labels through values.prometheus yet.
+  // See: https://github.com/prometheus-operator/kube-prometheus/issues/86#issuecomment-801169492
   {
     prometheus+: {
       prometheus+: {
         spec+: {
           externalLabels: {
-            cluster: externalVars.clusterName,
+            cluster: std.extVar('cluster_name'),
           },
-          replicas: 1,
         },
       },
     },
 
-    alertmanager+: {
-      alertmanager+: {
-        spec+: {
-          replicas: 1,
-        },
-      },
-    },
+    gitpod: gitpod($.values.gitpodParams),
   }
 ;
 
 local manifests = kp +
-                  (if externalVars.remoteWriteUrl != '' then (import './addons/remote-write.libsonnet') else {}) +
-                  (if externalVars.slackWebhookUrl != '' then (import './addons/slack-alerting.libsonnet') else {}) +
-                  (if externalVars.isPreviewEnv then (import './addons/preview-env.libsonnet') else (import './addons/cluster-monitoring.libsonnet'))
+                  (if std.extVar('remote_write_url') != '' then (import './addons/remote-write.libsonnet') else {}) +
+                  (if std.extVar('slack_webhook_url') != '' then (import './addons/slack-alerting.libsonnet') else {}) +
+                  //   (if std.extVar('is_preview_env') then (import './addons/preview-env.libsonnet') else (import './addons/cluster-monitoring.libsonnet'))
+                  (if std.extVar('is_preview_env') then (import './addons/preview-env.libsonnet') else {})
 ;
 
 { namespace: manifests.kubePrometheus.namespace } +
-// { 'podsecuritypolicy-restricted': manifests.restrictedPodSecurityPolicy } +
+{ 'podsecuritypolicy-restricted': manifests.restrictedPodSecurityPolicy } +
 { ['grafana/' + name]: manifests.grafana[name] for name in std.objectFields(manifests.grafana) } +
 { ['prometheus/' + name]: manifests.prometheus[name] for name in std.objectFields(manifests.prometheus) } +
+{ ['gitpod/' + name]: manifests.gitpod[name] for name in std.objectFields(manifests.gitpod) } +
 // Generic alerting rules, not related to a specific exporter.
 { 'prometheus/kube-prometheus-prometheusRule': manifests.kubePrometheus.prometheusRule } +
 
 // Preview environments are only interested on monitoring gitpod itself.
 // There is no need to include anything more than a namespace and prometheus instance for them.
-if !externalVars.isPreviewEnv then
+if !std.extVar('is_preview_env') then
   { ['alertmanager/' + name]: manifests.alertmanager[name] for name in std.objectFields(manifests.alertmanager) } +
   // BlackboxExporter Can be used for certificates and uptimecheck monitoring, but not necessary for now.
   // { ['blackbox-exporter/' + name]: kp.blackboxExporter[name] for name in std.objectFields(kp.blackboxExporter) } +

@@ -6,7 +6,7 @@
       namespaces: [std.extVar('namespace')],
     },
     grafana+: {
-      dashboards: $.prometheus.mixin.grafanaDashboards,
+      dashboards: $.prometheus.mixin.grafanaDashboards + $.gitpod.mixin.grafanaDashboards,
     },
   },
 

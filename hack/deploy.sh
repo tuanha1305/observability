@@ -60,7 +60,7 @@ fi
 
 
 # Even though we might not use Probe and ThanosRuler CRDs
-# the operator need that those CRDs exist. The operator gets stuck
+# the operator needs that those CRDs exist. The operator gets stuck
 # and don't deploy anything otherwise.
 #
 # Probe CRD
@@ -110,6 +110,7 @@ fi
 # Prometheus is the only common thing that is deployed to preview environments
 # and to full-cluster monitoring.
 kubectl apply -f manifests/prometheus/ \
-    -f manifests/grafana/
+    -f manifests/grafana/ \
+    -f manifests/gitpod
 
 kubectl rollout status -n ${NAMESPACE:-cluster-monitoring} deployment grafana
