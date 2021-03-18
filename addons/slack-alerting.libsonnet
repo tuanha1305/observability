@@ -7,7 +7,7 @@
         route:
           receiver: Black_Hole
           group_by:
-          - namespace
+          - alertname
           routes:
           - receiver: Watchdog
             match:
@@ -46,11 +46,6 @@
               *Alert:* {{ .Labels.alertname }}
               *Description:* {{ .Annotations.description }}
               {{ end }}
-            footer: '{{ template "slack.default.footer" . }}'
-            fallback: '{{ template "slack.default.fallback" . }}'
-            callback_id: '{{ template "slack.default.callbackid" . }}'
-            icon_emoji: '{{ template "slack.default.iconemoji" . }}'
-            icon_url: '{{ template "slack.default.iconurl" . }}'
             actions:
             - type: button
               text: 'Runbook :book:'
