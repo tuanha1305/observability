@@ -33,8 +33,8 @@ local kp =
     gitpod: gitpod($.values.gitpodParams),
 
     grafana+: {
-        // Disabling serviceMonitor for monitoring-central since there is no prometheus running there.
-        serviceMonitor:: {},
+      // Disabling serviceMonitor for monitoring-central since there is no prometheus running there.
+      serviceMonitor:: {},
     },
   }
 ;
