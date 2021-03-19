@@ -1642,5 +1642,5 @@
   "timepicker": {},
   "timezone": "utc",
   "title": "Gitpod / Component / ws-manager-bridge",
-  "uid": "kube_deployment_spec_replicas{cluster=~\"$cluster\", deployment=\"ws-manager-bridge\"}"
+  "uid": "ws-manager-bridge"
 }

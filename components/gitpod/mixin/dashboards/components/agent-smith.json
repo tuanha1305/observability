@@ -1852,5 +1852,5 @@
   "timepicker": {},
   "timezone": "utc",
   "title": "Gitpod / Component / agent-smith",
-  "uid": "go_gc_duration_seconds{cluster=~\"$cluster\", job=\"agent-smith\", pod=~\"$pod\", quantile=\"0.5\"}"
+  "uid": "agent-smith"
 }
