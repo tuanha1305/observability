@@ -15,8 +15,14 @@ build-monitoring-central:
 deploy: 
 	./hack/deploy.sh
 
+deploy-monitoring-central: 
+	kubectl apply -f manifests/grafana/
+
 delete: 
 	./hack/delete.sh
+
+delete-monitoring-central: 
+	kubectl delete -f manifests/grafana/
 
 fmt:
 	find . -name 'vendor' -prune -o -name '*.libsonnet' -print -o -name '*.jsonnet' -print | \
