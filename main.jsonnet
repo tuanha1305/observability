@@ -10,8 +10,11 @@ local kp =
       common+: {
         namespace: std.extVar('namespace'),
       },
+
       gitpodParams: {
         namespace: std.extVar('namespace'),
+        gitpodNamespace: 'default',
+        prometheusLabels: $.prometheus.prometheus.metadata.labels,
       },
 
       prometheus+: {
@@ -31,13 +34,22 @@ local kp =
     },
 
     gitpod: gitpod($.values.gitpodParams),
+    kubePrometheus+: {
+      namespace+: {
+        metadata+: {
+          labels+: {
+            namespace: std.extVar('namespace'),
+          },
+        },
+      },
+    },
   }
 ;
 
 local manifests = kp +
                   (if std.extVar('remote_write_url') != '' then (import './addons/remote-write.libsonnet') else {}) +
                   (if std.extVar('slack_webhook_url') != '' then (import './addons/slack-alerting.libsonnet') else {}) +
-                  (if std.extVar('dns_name') != '' then (import './addons/grafana-on-gcp-oauth.libsonnet')) +
+                  (if std.extVar('dns_name') != '' then (import './addons/grafana-on-gcp-oauth.libsonnet') else {}) +
                   (if std.extVar('is_preview_env') then (import './addons/preview-env.libsonnet') else {})
 ;
 

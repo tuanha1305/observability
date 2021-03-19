@@ -1,4 +1,5 @@
 {
+  "__inputs": [],
   "__requires": [
     {
       "type": "grafana",
@@ -36,7 +37,7 @@
   "gnetId": null,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1616084578635,
+  "iteration": 1616180154898,
   "links": [],
   "panels": [
     {
@@ -102,7 +103,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(gitpod_server_api_calls_total{cluster=~\"$cluster\", kubernetes_pod_node_name=~\"$node\",  kubernetes_pod_name=~\"$pod\", method=~\"$method\"}[5m])) by (method)",
+              "expr": "sum(rate(gitpod_server_api_calls_total{cluster=~\"$cluster\", pod=~\"$pod\", method=~\"$method\"}[5m])) by (method)",
               "interval": "",
               "legendFormat": "{{method}}",
               "queryType": "randomWalk",
@@ -203,7 +204,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(\n  rate(gitpod_server_api_calls_total{cluster=~\"$cluster\", kubernetes_pod_node_name=~\"$node\",  kubernetes_pod_name=~\"$pod\", method=~\"$method\", statusCode!~\"2..|429\"}[5m])\n) by (method)\n/\nsum(\n  rate(gitpod_server_api_calls_total{cluster=~\"$cluster\", kubernetes_pod_node_name=~\"$node\",  kubernetes_pod_name=~\"$pod\", method=~\"$method\"}[5m])\n) by (method)",
+              "expr": "sum(\n  rate(gitpod_server_api_calls_total{cluster=~\"$cluster\", pod=~\"$pod\", method=~\"$method\", statusCode!~\"2..|429\"}[5m])\n) by (method)\n/\nsum(\n  rate(gitpod_server_api_calls_total{cluster=~\"$cluster\", pod=~\"$pod\", method=~\"$method\"}[5m])\n) by (method)",
               "interval": "",
               "legendFormat": "{{method}}",
               "queryType": "randomWalk",
@@ -304,7 +305,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "# Status code 429 represents \"Too many requests\" \nsum(rate(gitpod_server_api_calls_total{cluster=~\"$cluster\", kubernetes_pod_node_name=~\"$node\",  kubernetes_pod_name=~\"$pod\", method=~\"$method\", statusCode=\"429\"}[5m])) by (method)",
+              "expr": "# Status code 429 represents \"Too many requests\" \nsum(rate(gitpod_server_api_calls_total{cluster=~\"$cluster\", pod=~\"$pod\", method=~\"$method\", statusCode=\"429\"}[5m])) by (method)",
               "interval": "",
               "legendFormat": "{{method}}",
               "queryType": "randomWalk",
@@ -1845,7 +1846,9 @@
   "refresh": "30s",
   "schemaVersion": 27,
   "style": "dark",
-  "tags": ["gitpod-mixin"],
+  "tags": [
+    "gitpod-mixin"
+  ],
   "templating": {
     "list": [
       {
@@ -1959,8 +1962,8 @@
       {
         "current": {
           "selected": false,
-          "text": "prometheus",
-          "value": "prometheus"
+          "text": "Metrics Long Term Storage",
+          "value": "Metrics Long Term Storage"
         },
         "description": null,
         "error": null,

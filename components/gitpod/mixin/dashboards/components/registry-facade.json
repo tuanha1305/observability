@@ -36,7 +36,7 @@
   "gnetId": null,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1616010979795,
+  "iteration": 1616179822202,
   "links": [],
   "panels": [
     {
@@ -1976,7 +1976,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "process_resident_memory_bytes{cluster=~\"$cluster\", job=~\"registry-facade\"}",
+              "expr": "process_resident_memory_bytes{cluster=~\"$cluster\", job=~\"registry-facade\", pod=~\"$pod\"}",
               "interval": "",
               "legendFormat": "{{cluster}} - {{pod}}",
               "queryType": "randomWalk",
@@ -2079,7 +2079,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "rate(process_cpu_seconds_total{cluster=~\"$cluster\", job=\"registry-facade\"}[1m])",
+              "expr": "rate(process_cpu_seconds_total{cluster=~\"$cluster\", job=\"registry-facade\", pod=~\"$pod\"}[5m])",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{cluster}} - {{pod}}",
@@ -2182,7 +2182,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "go_memstats_heap_sys_bytes{cluster=~\"$cluster\", job=\"registry-facade\"}",
+              "expr": "go_memstats_heap_sys_bytes{cluster=~\"$cluster\", job=\"registry-facade\", pod=~\"$pod\"}",
               "interval": "",
               "legendFormat": "{{cluster}} - {{pod}}",
               "queryType": "randomWalk",
@@ -2287,7 +2287,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "rate(go_memstats_alloc_bytes_total{cluster=~\"$cluster\", job=\"registry-facade\"}[1m])",
+              "expr": "rate(go_memstats_alloc_bytes_total{cluster=~\"$cluster\", job=\"registry-facade\", pod=~\"$pod\"}[5m])",
               "interval": "",
               "legendFormat": "{{cluster}} - {{pod}}",
               "refId": "A"
@@ -2383,7 +2383,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "go_goroutines{cluster=~\"$cluster\", job=\"registry-facade\"}",
+              "expr": "go_goroutines{cluster=~\"$cluster\", job=\"registry-facade\", pod=~\"$pod\"}",
               "interval": "",
               "legendFormat": "{{cluster}} - {{pod}}",
               "queryType": "randomWalk",
@@ -2480,19 +2480,19 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "go_gc_duration_seconds{cluster=~\"$cluster\", job=~\"registry-facade\", quantile=\"0.5\"}",
+              "expr": "go_gc_duration_seconds{cluster=~\"$cluster\", job=~\"registry-facade\", pod=~\"$pod\", quantile=\"0.5\"}",
               "interval": "",
               "legendFormat": "{{cluster}} - {{pod}} - GC Duration - 50th percentile",
               "refId": "A"
             },
             {
-              "expr": "go_gc_duration_seconds{cluster=~\"$cluster\", job=~\"registry-facade\", quantile=\"0.75\"}",
+              "expr": "go_gc_duration_seconds{cluster=~\"$cluster\", job=~\"registry-facade\", pod=~\"$pod\", quantile=\"0.75\"}",
               "interval": "",
               "legendFormat": "{{cluster}} - {{pod}} - GC Duration - 75th percentile",
               "refId": "B"
             },
             {
-              "expr": "go_gc_duration_seconds{cluster=~\"$cluster\", job=~\"registry-facade\", quantile=\"1\"}",
+              "expr": "go_gc_duration_seconds{cluster=~\"$cluster\", job=~\"registry-facade\", pod=~\"$pod\", quantile=\"1\"}",
               "interval": "",
               "legendFormat": "{{cluster}} - {{pod}} - GC Duration - 100th percentile",
               "refId": "C"
@@ -2556,28 +2556,9 @@
         "allValue": null,
         "current": {},
         "datasource": "$datasource",
-        "definition": "label_values(up{job=\"registry-facade\", cluster)",
+        "definition": "label_values(up{job=\"registry-facade\"}, cluster)",
         "description": null,
-        "error": {
-          "config": {
-            "headers": {
-              "X-Grafana-Org-Id": 1
-            },
-            "hideFromInspector": true,
-            "method": "GET",
-            "retry": 0,
-            "url": "api/datasources/proxy/1/api/v1/series?match%5B%5D=up%7Bjob%3D%22registry-facade%22&start=1616007443&end=1616011043"
-          },
-          "data": {
-            "error": "invalid parameter \"match[]\": 1:25: parse error: unexpected end of input inside braces",
-            "errorType": "bad_data",
-            "message": "invalid parameter \"match[]\": 1:25: parse error: unexpected end of input inside braces",
-            "status": "error"
-          },
-          "message": "invalid parameter \"match[]\": 1:25: parse error: unexpected end of input inside braces",
-          "status": 400,
-          "statusText": ""
-        },
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "Cluster",
@@ -2585,7 +2566,7 @@
         "name": "cluster",
         "options": [],
         "query": {
-          "query": "label_values(up{job=\"registry-facade\", cluster)",
+          "query": "label_values(up{job=\"registry-facade\"}, cluster)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -2682,8 +2663,8 @@
       {
         "current": {
           "selected": false,
-          "text": "prometheus",
-          "value": "prometheus"
+          "text": "Metrics Long Term Storage",
+          "value": "Metrics Long Term Storage"
         },
         "description": null,
         "error": null,
