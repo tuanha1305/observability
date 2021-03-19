@@ -10,7 +10,7 @@
                   [
                     {
                       name: 'GF_AUTH_ANONYMOUS_ENABLED',
-                      value: true,
+                      value: 'true',
                     },
                     {
                       name: 'GF_AUTH_ANONYMOUS_ORG_ROLE',
@@ -18,7 +18,7 @@
                     },
                     {
                       name: 'GF_AUTH_DISABLE_LOGIN_FORM',
-                      value: true,
+                      value: 'true',
                     },
                   ]
                 else [],

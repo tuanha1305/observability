@@ -47,7 +47,7 @@ local kp =
 local manifests = kp +
                   (if std.extVar('remote_write_url') != '' then (import './addons/remote-write.libsonnet') else {}) +
                   (if std.extVar('slack_webhook_url') != '' then (import './addons/slack-alerting.libsonnet') else {}) +
-                  //   (if std.extVar('is_preview_env') then (import './addons/preview-env.libsonnet') else (import './addons/cluster-monitoring.libsonnet'))
+                  (if std.extVar('dns_name') != '' then (import './addons/grafana-on-gcp-oauth.libsonnet')) +
                   (if std.extVar('is_preview_env') then (import './addons/preview-env.libsonnet') else {})
 ;
 
@@ -60,7 +60,7 @@ local manifests = kp +
 { 'prometheus/kube-prometheus-prometheusRule': manifests.kubePrometheus.prometheusRule } +
 
 // Preview environments are only interested on monitoring gitpod itself.
-// There is no need to include anything more than a namespace and prometheus instance for them.
+// There is no need to include anything more than a namespace and prometheus+grafana for them.
 if !std.extVar('is_preview_env') then
   { ['alertmanager/' + name]: manifests.alertmanager[name] for name in std.objectFields(manifests.alertmanager) } +
   // BlackboxExporter Can be used for certificates and uptimecheck monitoring, but not necessary for now.
