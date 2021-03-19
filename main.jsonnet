@@ -16,6 +16,9 @@ local kp =
 
       prometheus+: {
         replicas: 1,
+        externalLabels: {
+          cluster: std.extVar('cluster_name'),
+        },
       },
 
       alertmanager+: {
@@ -24,19 +27,6 @@ local kp =
 
       grafana+: {
         dashboards+: $.gitpod.mixin.grafanaDashboards,
-      },
-    },
-  } +
-  // Unfortunately there is no way to change external Labels through values.prometheus yet.
-  // See: https://github.com/prometheus-operator/kube-prometheus/issues/86#issuecomment-801169492
-  {
-    prometheus+: {
-      prometheus+: {
-        spec+: {
-          externalLabels: {
-            cluster: std.extVar('cluster_name'),
-          },
-        },
       },
     },
 
