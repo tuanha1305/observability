@@ -36,7 +36,7 @@
   "gnetId": null,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1616085409521,
+  "iteration": 1616180293707,
   "links": [],
   "panels": [
     {
@@ -322,6 +322,405 @@
               "selected": false,
               "text": "InitWorkspace",
               "value": "InitWorkspace"
+            }
+          },
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.99, \n  sum(\n    rate(grpc_server_handling_seconds_bucket{job=\"ws-daemon\", cluster=~\"$cluster\", grpc_method=~\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method, le)\n)",
+              "interval": "",
+              "legendFormat": "{{cluster}} - {{grpc_method}} - 99th Percentile",
+              "queryType": "randomWalk",
+              "refId": "A"
+            },
+            {
+              "expr": "histogram_quantile(0.95, \n  sum(\n    rate(grpc_server_handling_seconds_bucket{job=\"ws-daemon\", cluster=~\"$cluster\", grpc_method=~\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method, le)\n)",
+              "interval": "",
+              "legendFormat": "{{cluster}} - {{grpc_method}} - 95th Percentile",
+              "queryType": "randomWalk",
+              "refId": "B"
+            },
+            {
+              "expr": "histogram_quantile(0.50, \n  sum(\n    rate(grpc_server_handling_seconds_bucket{job=\"ws-daemon\", cluster=~\"$cluster\", grpc_method=~\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method, le)\n)",
+              "interval": "",
+              "legendFormat": "{{cluster}} - {{grpc_method}} - 50th Percentile",
+              "queryType": "randomWalk",
+              "refId": "C"
+            },
+            {
+              "expr": "  sum(\n    rate(grpc_server_handling_seconds_sum{job=\"ws-daemon\", cluster=~\"$cluster\", grpc_method=\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method)\n  /\n  sum(\n    rate(grpc_server_handling_seconds_count{job=\"ws-daemon\", cluster=~\"$cluster\", grpc_method=\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method)",
+              "hide": false,
+              "interval": "",
+              "legendFormat": "{{cluster}} - {{grpc_method}} - avg",
+              "queryType": "randomWalk",
+              "refId": "D"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "$grpc_method: Time handling gRPC calls",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "s",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "reqps",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$datasource",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 12,
+            "y": 10
+          },
+          "hiddenSeries": false,
+          "id": 59,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": true,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "maxPerRow": 2,
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.4.3",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "repeatDirection": "h",
+          "repeatIteration": 1616180293690,
+          "repeatPanelId": 58,
+          "scopedVars": {
+            "grpc_method": {
+              "selected": false,
+              "text": "DisposeWorkspace",
+              "value": "DisposeWorkspace"
+            }
+          },
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.99, \n  sum(\n    rate(grpc_server_handling_seconds_bucket{job=\"ws-daemon\", cluster=~\"$cluster\", grpc_method=~\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method, le)\n)",
+              "interval": "",
+              "legendFormat": "{{cluster}} - {{grpc_method}} - 99th Percentile",
+              "queryType": "randomWalk",
+              "refId": "A"
+            },
+            {
+              "expr": "histogram_quantile(0.95, \n  sum(\n    rate(grpc_server_handling_seconds_bucket{job=\"ws-daemon\", cluster=~\"$cluster\", grpc_method=~\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method, le)\n)",
+              "interval": "",
+              "legendFormat": "{{cluster}} - {{grpc_method}} - 95th Percentile",
+              "queryType": "randomWalk",
+              "refId": "B"
+            },
+            {
+              "expr": "histogram_quantile(0.50, \n  sum(\n    rate(grpc_server_handling_seconds_bucket{job=\"ws-daemon\", cluster=~\"$cluster\", grpc_method=~\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method, le)\n)",
+              "interval": "",
+              "legendFormat": "{{cluster}} - {{grpc_method}} - 50th Percentile",
+              "queryType": "randomWalk",
+              "refId": "C"
+            },
+            {
+              "expr": "  sum(\n    rate(grpc_server_handling_seconds_sum{job=\"ws-daemon\", cluster=~\"$cluster\", grpc_method=\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method)\n  /\n  sum(\n    rate(grpc_server_handling_seconds_count{job=\"ws-daemon\", cluster=~\"$cluster\", grpc_method=\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method)",
+              "hide": false,
+              "interval": "",
+              "legendFormat": "{{cluster}} - {{grpc_method}} - avg",
+              "queryType": "randomWalk",
+              "refId": "D"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "$grpc_method: Time handling gRPC calls",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "s",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "reqps",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$datasource",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 0,
+            "y": 19
+          },
+          "hiddenSeries": false,
+          "id": 60,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": true,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "maxPerRow": 2,
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.4.3",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "repeatDirection": "h",
+          "repeatIteration": 1616180293690,
+          "repeatPanelId": 58,
+          "scopedVars": {
+            "grpc_method": {
+              "selected": false,
+              "text": "WaitForInit",
+              "value": "WaitForInit"
+            }
+          },
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.99, \n  sum(\n    rate(grpc_server_handling_seconds_bucket{job=\"ws-daemon\", cluster=~\"$cluster\", grpc_method=~\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method, le)\n)",
+              "interval": "",
+              "legendFormat": "{{cluster}} - {{grpc_method}} - 99th Percentile",
+              "queryType": "randomWalk",
+              "refId": "A"
+            },
+            {
+              "expr": "histogram_quantile(0.95, \n  sum(\n    rate(grpc_server_handling_seconds_bucket{job=\"ws-daemon\", cluster=~\"$cluster\", grpc_method=~\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method, le)\n)",
+              "interval": "",
+              "legendFormat": "{{cluster}} - {{grpc_method}} - 95th Percentile",
+              "queryType": "randomWalk",
+              "refId": "B"
+            },
+            {
+              "expr": "histogram_quantile(0.50, \n  sum(\n    rate(grpc_server_handling_seconds_bucket{job=\"ws-daemon\", cluster=~\"$cluster\", grpc_method=~\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method, le)\n)",
+              "interval": "",
+              "legendFormat": "{{cluster}} - {{grpc_method}} - 50th Percentile",
+              "queryType": "randomWalk",
+              "refId": "C"
+            },
+            {
+              "expr": "  sum(\n    rate(grpc_server_handling_seconds_sum{job=\"ws-daemon\", cluster=~\"$cluster\", grpc_method=\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method)\n  /\n  sum(\n    rate(grpc_server_handling_seconds_count{job=\"ws-daemon\", cluster=~\"$cluster\", grpc_method=\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method)",
+              "hide": false,
+              "interval": "",
+              "legendFormat": "{{cluster}} - {{grpc_method}} - avg",
+              "queryType": "randomWalk",
+              "refId": "D"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "$grpc_method: Time handling gRPC calls",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "s",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "reqps",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$datasource",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 12,
+            "y": 19
+          },
+          "hiddenSeries": false,
+          "id": 61,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": true,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "maxPerRow": 2,
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.4.3",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "repeatDirection": "h",
+          "repeatIteration": 1616180293690,
+          "repeatPanelId": 58,
+          "scopedVars": {
+            "grpc_method": {
+              "selected": false,
+              "text": "TakeSnapshot",
+              "value": "TakeSnapshot"
             }
           },
           "seriesOverrides": [],
@@ -2144,9 +2543,9 @@
         "description": null,
         "error": null,
         "hide": 0,
-        "includeAll": true,
+        "includeAll": false,
         "label": "Node",
-        "multi": true,
+        "multi": false,
         "name": "node",
         "options": [],
         "query": {
@@ -2220,8 +2619,8 @@
       {
         "current": {
           "selected": false,
-          "text": "prometheus",
-          "value": "prometheus"
+          "text": "Metrics Long Term Storage",
+          "value": "Metrics Long Term Storage"
         },
         "description": null,
         "error": null,

@@ -37,7 +37,7 @@
   "gnetId": null,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1616007622219,
+  "iteration": 1616178218791,
   "links": [],
   "panels": [
     {
@@ -1165,10 +1165,10 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "process_resident_memory_bytes{job=\"agent-smith\"}",
+              "expr": "process_resident_memory_bytes{cluster=~\"$cluster\", job=\"agent-smith\", pod=~\"$pod\"}",
               "hide": false,
               "interval": "",
-              "legendFormat": "{{pod}}",
+              "legendFormat": "{{cluster}} - {{pod}}",
               "queryType": "randomWalk",
               "refId": "A"
             }
@@ -1269,10 +1269,10 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "rate(process_cpu_seconds_total{cluster=~\"$cluster\", kubernetes_pod_name=~\"$pod\"}[1m])",
+              "expr": "rate(process_cpu_seconds_total{cluster=~\"$cluster\", job=\"agent-smith\", pod=~\"$pod\"}[5m])",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{cluster}} - {{kubernetes_pod_node_name}} - {{ kubernetes_pod_name }}",
+              "legendFormat": "{{cluster}} - {{pod}}",
               "metric": "prometheus_local_storage_ingested_samples_total",
               "refId": "A",
               "step": 10
@@ -1372,9 +1372,9 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "go_memstats_heap_sys_bytes{cluster=~\"$cluster\", kubernetes_pod_name=~\"$pod\"}",
+              "expr": "go_memstats_heap_sys_bytes{cluster=~\"$cluster\", pod=~\"$pod\"}",
               "interval": "",
-              "legendFormat": "{{cluster}} - {{kubernetes_pod_node_name}} - {{kubernetes_pod_name}}",
+              "legendFormat": "{{cluster}} - {{pod}}",
               "queryType": "randomWalk",
               "refId": "A"
             }
@@ -1477,9 +1477,9 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "rate(go_memstats_alloc_bytes_total{cluster=~\"$cluster\", kubernetes_pod_name=~\"$pod\"})[1m]",
+              "expr": "rate(go_memstats_alloc_bytes_total{cluster=~\"$cluster\", pod=~\"$pod\"}[5m])",
               "interval": "",
-              "legendFormat": "{{cluster}} - {{kubernetes_pod_node_name}} - {{kubernetes_pod_name}}",
+              "legendFormat": "{{cluster}} - {{pod}}",
               "refId": "A"
             }
           ],
@@ -1573,9 +1573,9 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "go_goroutines{cluster=~\"$cluster\", kubernetes_pod_name=~\"$pod\"}",
+              "expr": "go_goroutines{cluster=~\"$cluster\", job=\"agent-smith\", pod=~\"$pod\"}",
               "interval": "",
-              "legendFormat": "{{cluster}} - {{kubernetes_pod_node_name}} - {{kubernetes_pod_name}}",
+              "legendFormat": "{{cluster}} - {{pod}}",
               "queryType": "randomWalk",
               "refId": "A"
             }
@@ -1670,21 +1670,21 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "go_gc_duration_seconds{cluster=~\"$cluster\", kubernetes_pod_name=~\"$pod\", quantile=\"0.5\"}",
+              "expr": "go_gc_duration_seconds{cluster=~\"$cluster\", job=\"agent-smith\", pod=~\"$pod\", quantile=\"0.5\"}",
               "interval": "",
-              "legendFormat": "{{cluster}} - {{kubernetes_pod_name}} - GC Duration - 50th percentile",
+              "legendFormat": "{{cluster}} - {{pod}} - GC Duration - 50th percentile",
               "refId": "A"
             },
             {
-              "expr": "go_gc_duration_seconds{cluster=~\"$cluster\", kubernetes_pod_name=~\"$pod\", quantile=\"0.75\"}",
+              "expr": "go_gc_duration_seconds{cluster=~\"$cluster\", job=\"agent-smith\", pod=~\"$pod\", quantile=\"0.75\"}",
               "interval": "",
-              "legendFormat": "{{cluster}} - {{kubernetes_pod_name}} - GC Duration - 75th percentile",
+              "legendFormat": "{{cluster}} - {{pod}} - GC Duration - 75th percentile",
               "refId": "B"
             },
             {
-              "expr": "go_gc_duration_seconds{cluster=~\"$cluster\", kubernetes_pod_name=~\"$pod\", quantile=\"1\"}",
+              "expr": "go_gc_duration_seconds{cluster=~\"$cluster\", job=\"agent-smith\", pod=~\"$pod\", quantile=\"1\"}",
               "interval": "",
-              "legendFormat": "{{cluster}} - {{kubernetes_pod_name}} - GC Duration - 100th percentile",
+              "legendFormat": "{{cluster}} - {{pod}} - GC Duration - 100th percentile",
               "refId": "C"
             }
           ],
@@ -1826,8 +1826,8 @@
       {
         "current": {
           "selected": false,
-          "text": "prometheus",
-          "value": "prometheus"
+          "text": "Metrics Long Term Storage",
+          "value": "Metrics Long Term Storage"
         },
         "description": null,
         "error": null,
@@ -1852,6 +1852,5 @@
   "timepicker": {},
   "timezone": "utc",
   "title": "Gitpod / Component / agent-smith",
-  "uid": "agent-smith",
-  "version": 1
+  "uid": "go_gc_duration_seconds{cluster=~\"$cluster\", job=\"agent-smith\", pod=~\"$pod\", quantile=\"0.5\"}"
 }

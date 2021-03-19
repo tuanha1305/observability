@@ -1,4 +1,5 @@
 {
+  "__inputs": [],
   "__requires": [
     {
       "type": "grafana",
@@ -36,7 +37,7 @@
   "gnetId": null,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1616017441152,
+  "iteration": 1616180866061,
   "links": [],
   "panels": [
     {
@@ -99,7 +100,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(gitpod_ws_scheduler_schedule_attempts_total[5m])) by (cluster, pod, workspaceType)",
+              "expr": "sum(rate(gitpod_ws_scheduler_schedule_attempts_total[5m])) by (cluster, workspaceType)",
               "interval": "",
               "legendFormat": "{{cluster}} - {{pod}} - {{workspaceType}}",
               "queryType": "randomWalk",
@@ -197,7 +198,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(gitpod_ws_scheduler_schedule_attempts_total{cluster=~\"$cluster\", result!=\"scheduled\"}[5m])) by (cluster, pod, workspaceType, result)",
+              "expr": "sum(rate(gitpod_ws_scheduler_schedule_attempts_total{cluster=~\"$cluster\", result!=\"scheduled\"}[5m])) by (cluster, workspaceType, result)",
               "interval": "",
               "legendFormat": "{{cluster}} - {{pod}} - {{workspaceType}} - {{result}}",
               "queryType": "randomWalk",
@@ -294,7 +295,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(gitpod_ws_scheduler_preemption_attempts_total[5m])) by (cluster, pod)",
+              "expr": "sum(rate(gitpod_ws_scheduler_preemption_attempts_total[5m])) by (cluster)",
               "interval": "",
               "legendFormat": "{{cluster}} - {{pod}}",
               "queryType": "randomWalk",
@@ -2574,8 +2575,8 @@
       {
         "current": {
           "selected": false,
-          "text": "prometheus",
-          "value": "prometheus"
+          "text": "Metrics Long Term Storage",
+          "value": "Metrics Long Term Storage"
         },
         "description": null,
         "error": null,

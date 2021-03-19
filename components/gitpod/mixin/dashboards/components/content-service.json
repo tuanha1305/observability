@@ -36,7 +36,7 @@
   "gnetId": null,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1616012130671,
+  "iteration": 1616181205217,
   "links": [],
   "panels": [
     {
@@ -47,6 +47,631 @@
         "w": 24,
         "x": 0,
         "y": 0
+      },
+      "id": 46,
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$datasource",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 0,
+            "y": 1
+          },
+          "hiddenSeries": false,
+          "id": 48,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": true,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.4.3",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "repeatDirection": "h",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(rate(grpc_server_handled_total{job=\"content-service\", cluster=~\"$cluster\", grpc_method=~\"$grpc_method\"}[1m])) by (grpc_code, grpc_method, cluster)",
+              "interval": "",
+              "legendFormat": "{{cluster}} - {{grpc_method}} - {{grpc_code}}",
+              "queryType": "randomWalk",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "gRPC calls handled (Server-side)",
+          "tooltip": {
+            "shared": true,
+            "sort": 2,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 2,
+              "format": "reqps",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "reqps",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$datasource",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 12,
+            "y": 1
+          },
+          "hiddenSeries": false,
+          "id": 50,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": true,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.4.3",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "repeatDirection": "h",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(rate(grpc_server_started_total{job=\"content-service\", cluster=~\"$cluster\", grpc_method=~\"$grpc_method\"}[1m])) by (grpc_code, grpc_method, cluster)",
+              "interval": "",
+              "legendFormat": "{{cluster}} - {{grpc_method}} - Started",
+              "queryType": "randomWalk",
+              "refId": "A"
+            },
+            {
+              "expr": "sum(rate(grpc_server_handled_total{job=\"content-service\", cluster=~\"$cluster\", grpc_method=~\"$grpc_method\"}[1m])) by (grpc_method, cluster)",
+              "hide": false,
+              "interval": "",
+              "legendFormat": "{{cluster}} - {{grpc_method}} - Finished",
+              "queryType": "randomWalk",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "gRPC start and finish rate",
+          "tooltip": {
+            "shared": true,
+            "sort": 2,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 2,
+              "format": "reqps",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "none",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$datasource",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 0,
+            "y": 10
+          },
+          "hiddenSeries": false,
+          "id": 52,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": true,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "maxPerRow": 2,
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.4.3",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "repeat": "grpc_method",
+          "repeatDirection": "h",
+          "scopedVars": {
+            "grpc_method": {
+              "selected": false,
+              "text": "Delete",
+              "value": "Delete"
+            }
+          },
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.99, \n  sum(\n    rate(grpc_server_handling_seconds_bucket{job=\"content-service\", cluster=~\"$cluster\", grpc_method=~\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method, le)\n)",
+              "interval": "",
+              "legendFormat": "{{cluster}} - {{grpc_method}} - 99th Percentile",
+              "queryType": "randomWalk",
+              "refId": "A"
+            },
+            {
+              "expr": "histogram_quantile(0.95, \n  sum(\n    rate(grpc_server_handling_seconds_bucket{job=\"content-service\", cluster=~\"$cluster\", grpc_method=~\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method, le)\n)",
+              "interval": "",
+              "legendFormat": "{{cluster}} - {{grpc_method}} - 95th Percentile",
+              "queryType": "randomWalk",
+              "refId": "B"
+            },
+            {
+              "expr": "histogram_quantile(0.50, \n  sum(\n    rate(grpc_server_handling_seconds_bucket{job=\"content-service\", cluster=~\"$cluster\", grpc_method=~\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method, le)\n)",
+              "interval": "",
+              "legendFormat": "{{cluster}} - {{grpc_method}} - 50th Percentile",
+              "queryType": "randomWalk",
+              "refId": "C"
+            },
+            {
+              "expr": "  sum(\n    rate(grpc_server_handling_seconds_sum{job=\"content-service\", cluster=~\"$cluster\", grpc_method=\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method)\n  /\n  sum(\n    rate(grpc_server_handling_seconds_count{job=\"content-service\", cluster=~\"$cluster\", grpc_method=\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method)",
+              "hide": false,
+              "interval": "",
+              "legendFormat": "{{cluster}} - {{grpc_method}} - avg",
+              "queryType": "randomWalk",
+              "refId": "D"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "$grpc_method: Time handling gRPC calls",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "s",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "reqps",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$datasource",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 12,
+            "y": 10
+          },
+          "hiddenSeries": false,
+          "id": 53,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": true,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "maxPerRow": 2,
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.4.3",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "repeatDirection": "h",
+          "repeatIteration": 1616181205216,
+          "repeatPanelId": 52,
+          "scopedVars": {
+            "grpc_method": {
+              "selected": false,
+              "text": "DownloadUrl",
+              "value": "DownloadUrl"
+            }
+          },
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.99, \n  sum(\n    rate(grpc_server_handling_seconds_bucket{job=\"content-service\", cluster=~\"$cluster\", grpc_method=~\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method, le)\n)",
+              "interval": "",
+              "legendFormat": "{{cluster}} - {{grpc_method}} - 99th Percentile",
+              "queryType": "randomWalk",
+              "refId": "A"
+            },
+            {
+              "expr": "histogram_quantile(0.95, \n  sum(\n    rate(grpc_server_handling_seconds_bucket{job=\"content-service\", cluster=~\"$cluster\", grpc_method=~\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method, le)\n)",
+              "interval": "",
+              "legendFormat": "{{cluster}} - {{grpc_method}} - 95th Percentile",
+              "queryType": "randomWalk",
+              "refId": "B"
+            },
+            {
+              "expr": "histogram_quantile(0.50, \n  sum(\n    rate(grpc_server_handling_seconds_bucket{job=\"content-service\", cluster=~\"$cluster\", grpc_method=~\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method, le)\n)",
+              "interval": "",
+              "legendFormat": "{{cluster}} - {{grpc_method}} - 50th Percentile",
+              "queryType": "randomWalk",
+              "refId": "C"
+            },
+            {
+              "expr": "  sum(\n    rate(grpc_server_handling_seconds_sum{job=\"content-service\", cluster=~\"$cluster\", grpc_method=\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method)\n  /\n  sum(\n    rate(grpc_server_handling_seconds_count{job=\"content-service\", cluster=~\"$cluster\", grpc_method=\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method)",
+              "hide": false,
+              "interval": "",
+              "legendFormat": "{{cluster}} - {{grpc_method}} - avg",
+              "queryType": "randomWalk",
+              "refId": "D"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "$grpc_method: Time handling gRPC calls",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "s",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "reqps",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$datasource",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 0,
+            "y": 19
+          },
+          "hiddenSeries": false,
+          "id": 54,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": true,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "maxPerRow": 2,
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.4.3",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "repeatDirection": "h",
+          "repeatIteration": 1616181205216,
+          "repeatPanelId": 52,
+          "scopedVars": {
+            "grpc_method": {
+              "selected": false,
+              "text": "UploadUrl",
+              "value": "UploadUrl"
+            }
+          },
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.99, \n  sum(\n    rate(grpc_server_handling_seconds_bucket{job=\"content-service\", cluster=~\"$cluster\", grpc_method=~\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method, le)\n)",
+              "interval": "",
+              "legendFormat": "{{cluster}} - {{grpc_method}} - 99th Percentile",
+              "queryType": "randomWalk",
+              "refId": "A"
+            },
+            {
+              "expr": "histogram_quantile(0.95, \n  sum(\n    rate(grpc_server_handling_seconds_bucket{job=\"content-service\", cluster=~\"$cluster\", grpc_method=~\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method, le)\n)",
+              "interval": "",
+              "legendFormat": "{{cluster}} - {{grpc_method}} - 95th Percentile",
+              "queryType": "randomWalk",
+              "refId": "B"
+            },
+            {
+              "expr": "histogram_quantile(0.50, \n  sum(\n    rate(grpc_server_handling_seconds_bucket{job=\"content-service\", cluster=~\"$cluster\", grpc_method=~\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method, le)\n)",
+              "interval": "",
+              "legendFormat": "{{cluster}} - {{grpc_method}} - 50th Percentile",
+              "queryType": "randomWalk",
+              "refId": "C"
+            },
+            {
+              "expr": "  sum(\n    rate(grpc_server_handling_seconds_sum{job=\"content-service\", cluster=~\"$cluster\", grpc_method=\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method)\n  /\n  sum(\n    rate(grpc_server_handling_seconds_count{job=\"content-service\", cluster=~\"$cluster\", grpc_method=\"$grpc_method\"}[5m])\n  ) by (cluster, grpc_method)",
+              "hide": false,
+              "interval": "",
+              "legendFormat": "{{cluster}} - {{grpc_method}} - avg",
+              "queryType": "randomWalk",
+              "refId": "D"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "$grpc_method: Time handling gRPC calls",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "s",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "reqps",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "title": "gRPC Metrics",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 1
       },
       "id": 16,
       "panels": [
@@ -1113,7 +1738,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 1
+        "y": 2
       },
       "id": 22,
       "panels": [
@@ -1842,6 +2467,33 @@
         "regex": "",
         "skipUrlSync": false,
         "type": "datasource"
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "$datasource",
+        "definition": "label_values(grpc_server_handled_total{job=\"content-service\", cluster=~\"$cluster\"}, grpc_method)",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": "gRPC Method",
+        "multi": true,
+        "name": "grpc_method",
+        "options": [],
+        "query": {
+          "query": "label_values(grpc_server_handled_total{job=\"content-service\", cluster=~\"$cluster\"}, grpc_method)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
       }
     ]
   },

@@ -3,8 +3,10 @@ local defaults = {
 
   name: 'gitpod',
   namespace: error 'must provide namespace',
+  // Used by pod network policies
+  prometheusLabels: error 'must provide prometheus labels',
   gitpodNamespace: 'default',
-  // Remember to add 'app.kubernetes.io/component': 'exporter'
+  // Remember to add 'app.kubernetes.io/component' to each component
   commonLabels: {
     'app.kubernetes.io/name': defaults.name,
     'app.kubernetes.io/part-of': 'kube-prometheus',
@@ -76,6 +78,37 @@ function(params) {
     },
   },
 
+  agentSmithNetworkPolicy: {
+    apiVersion: 'networking.k8s.io/v1',
+    kind: 'NetworkPolicy',
+    metadata: {
+      name: 'agent-smith-allow-kube-prometheus',
+      namespace: $._config.gitpodNamespace,
+      labels: $._config.commonLabels,
+    },
+    spec: {
+      podSelector: {
+        matchLabels: {
+          app: 'gitpod',
+          component: 'agent-smith',
+        },
+      },
+      policyTypes: ['Ingress'],
+      ingress: [{
+        from: [{
+          podSelector: {
+            matchLabels: $._config.prometheusLabels,
+          },
+          namespaceSelector: {
+            matchLabels: {
+              namespace: $._config.namespace,
+            },
+          },
+        }],
+      }],
+    },
+  },
+
   blobserveService: {
     apiVersion: 'v1',
     kind: 'Service',
@@ -121,6 +154,37 @@ function(params) {
       endpoints: [{
         port: 'metrics',
         interval: '30s',
+      }],
+    },
+  },
+
+  blobserveNetworkPolicy: {
+    apiVersion: 'networking.k8s.io/v1',
+    kind: 'NetworkPolicy',
+    metadata: {
+      name: 'blobserve-allow-kube-prometheus',
+      namespace: $._config.gitpodNamespace,
+      labels: $._config.commonLabels,
+    },
+    spec: {
+      podSelector: {
+        matchLabels: {
+          app: 'gitpod',
+          component: 'blobserve',
+        },
+      },
+      policyTypes: ['Ingress'],
+      ingress: [{
+        from: [{
+          podSelector: {
+            matchLabels: $._config.prometheusLabels,
+          },
+          namespaceSelector: {
+            matchLabels: {
+              namespace: $._config.namespace,
+            },
+          },
+        }],
       }],
     },
   },
@@ -174,21 +238,56 @@ function(params) {
     },
   },
 
+  contentServiceNetworkPolicy: {
+    apiVersion: 'networking.k8s.io/v1',
+    kind: 'NetworkPolicy',
+    metadata: {
+      name: 'content-service-allow-kube-prometheus',
+      namespace: $._config.gitpodNamespace,
+      labels: $._config.commonLabels,
+    },
+    spec: {
+      podSelector: {
+        matchLabels: {
+          app: 'gitpod',
+          component: 'content-service',
+        },
+      },
+      policyTypes: ['Ingress'],
+      ingress: [{
+        from: [{
+          podSelector: {
+            matchLabels: $._config.prometheusLabels,
+          },
+          namespaceSelector: {
+            matchLabels: {
+              namespace: $._config.namespace,
+            },
+          },
+        }],
+      }],
+    },
+  },
+
   // Not necessary as credit-watcher doesn't expose metrics
   creditWatcherService:: {},
   creditWatcherServiceMonitor:: {},
+  creditWatcherNetworkPolicy:: {},
 
   // Not necessary as dashboard doesn't expose metrics
   dashboardService:: {},
   dashboardServiceMonitor:: {},
+  dashboardNetworkPolicy:: {},
 
   // Not necessary as db doesn't expose metrics
   dbService:: {},
   dbServiceMonitor:: {},
+  dbNetworkPolicy:: {},
 
   // Not necessary as db-sync doesn't expose metrics
   dbSyncService:: {},
   dbSyncServiceMonitor:: {},
+  dbSyncNetworkPolicy:: {},
 
   imageBuilderService: {
     apiVersion: 'v1',
@@ -235,6 +334,37 @@ function(params) {
       endpoints: [{
         port: 'metrics',
         interval: '30s',
+      }],
+    },
+  },
+
+  imageBuilderNetworkPolicy: {
+    apiVersion: 'networking.k8s.io/v1',
+    kind: 'NetworkPolicy',
+    metadata: {
+      name: 'image-builder-allow-kube-prometheus',
+      namespace: $._config.gitpodNamespace,
+      labels: $._config.commonLabels,
+    },
+    spec: {
+      podSelector: {
+        matchLabels: {
+          app: 'gitpod',
+          component: 'image-builder',
+        },
+      },
+      policyTypes: ['Ingress'],
+      ingress: [{
+        from: [{
+          podSelector: {
+            matchLabels: $._config.prometheusLabels,
+          },
+          namespaceSelector: {
+            matchLabels: {
+              namespace: $._config.namespace,
+            },
+          },
+        }],
       }],
     },
   },
@@ -288,9 +418,41 @@ function(params) {
     },
   },
 
+  messagebusNetworkPolicy: {
+    apiVersion: 'networking.k8s.io/v1',
+    kind: 'NetworkPolicy',
+    metadata: {
+      name: 'messagebus-allow-kube-prometheus',
+      namespace: $._config.gitpodNamespace,
+      labels: $._config.commonLabels,
+    },
+    spec: {
+      podSelector: {
+        matchLabels: {
+          app: 'gitpod',
+          component: 'messagebus',
+        },
+      },
+      policyTypes: ['Ingress'],
+      ingress: [{
+        from: [{
+          podSelector: {
+            matchLabels: $._config.prometheusLabels,
+          },
+          namespaceSelector: {
+            matchLabels: {
+              namespace: $._config.namespace,
+            },
+          },
+        }],
+      }],
+    },
+  },
+
   // Not necessary as proxy doesn't expose metrics
   proxyService:: {},
   proxyServiceMonitor:: {},
+  proxyNetworkPolicy:: {},
 
   registryFacadeService: {
     apiVersion: 'v1',
@@ -337,6 +499,37 @@ function(params) {
       endpoints: [{
         port: 'metrics',
         interval: '30s',
+      }],
+    },
+  },
+
+  registryFacadeNetworkPolicy: {
+    apiVersion: 'networking.k8s.io/v1',
+    kind: 'NetworkPolicy',
+    metadata: {
+      name: 'registry-facade-allow-kube-prometheus',
+      namespace: $._config.gitpodNamespace,
+      labels: $._config.commonLabels,
+    },
+    spec: {
+      podSelector: {
+        matchLabels: {
+          app: 'gitpod',
+          component: 'registry-facade',
+        },
+      },
+      policyTypes: ['Ingress'],
+      ingress: [{
+        from: [{
+          podSelector: {
+            matchLabels: $._config.prometheusLabels,
+          },
+          namespaceSelector: {
+            matchLabels: {
+              namespace: $._config.namespace,
+            },
+          },
+        }],
       }],
     },
   },
@@ -391,6 +584,37 @@ function(params) {
     },
   },
 
+  serverNetworkPolicy: {
+    apiVersion: 'networking.k8s.io/v1',
+    kind: 'NetworkPolicy',
+    metadata: {
+      name: 'server-allow-kube-prometheus',
+      namespace: $._config.gitpodNamespace,
+      labels: $._config.commonLabels,
+    },
+    spec: {
+      podSelector: {
+        matchLabels: {
+          app: 'gitpod',
+          component: 'server',
+        },
+      },
+      policyTypes: ['Ingress'],
+      ingress: [{
+        from: [{
+          podSelector: {
+            matchLabels: $._config.prometheusLabels,
+          },
+          namespaceSelector: {
+            matchLabels: {
+              namespace: $._config.namespace,
+            },
+          },
+        }],
+      }],
+    },
+  },
+
   wsDaemonService: {
     apiVersion: 'v1',
     kind: 'Service',
@@ -436,6 +660,37 @@ function(params) {
       endpoints: [{
         port: 'metrics',
         interval: '30s',
+      }],
+    },
+  },
+
+  wsDaemonNetworkPolicy: {
+    apiVersion: 'networking.k8s.io/v1',
+    kind: 'NetworkPolicy',
+    metadata: {
+      name: 'ws-daemon-allow-kube-prometheus',
+      namespace: $._config.gitpodNamespace,
+      labels: $._config.commonLabels,
+    },
+    spec: {
+      podSelector: {
+        matchLabels: {
+          app: 'gitpod',
+          component: 'ws-daemon',
+        },
+      },
+      policyTypes: ['Ingress'],
+      ingress: [{
+        from: [{
+          podSelector: {
+            matchLabels: $._config.prometheusLabels,
+          },
+          namespaceSelector: {
+            matchLabels: {
+              namespace: $._config.namespace,
+            },
+          },
+        }],
       }],
     },
   },
@@ -489,6 +744,37 @@ function(params) {
     },
   },
 
+  wsManagerNetworkPolicy: {
+    apiVersion: 'networking.k8s.io/v1',
+    kind: 'NetworkPolicy',
+    metadata: {
+      name: 'ws-manager-allow-kube-prometheus',
+      namespace: $._config.gitpodNamespace,
+      labels: $._config.commonLabels,
+    },
+    spec: {
+      podSelector: {
+        matchLabels: {
+          app: 'gitpod',
+          component: 'ws-manager',
+        },
+      },
+      policyTypes: ['Ingress'],
+      ingress: [{
+        from: [{
+          podSelector: {
+            matchLabels: $._config.prometheusLabels,
+          },
+          namespaceSelector: {
+            matchLabels: {
+              namespace: $._config.namespace,
+            },
+          },
+        }],
+      }],
+    },
+  },
+
   wsManagerBridgeService: {
     apiVersion: 'v1',
     kind: 'Service',
@@ -538,9 +824,41 @@ function(params) {
     },
   },
 
+  wsManagerBridgeNetworkPolicy: {
+    apiVersion: 'networking.k8s.io/v1',
+    kind: 'NetworkPolicy',
+    metadata: {
+      name: 'ws-manager-bridge-allow-kube-prometheus',
+      namespace: $._config.gitpodNamespace,
+      labels: $._config.commonLabels,
+    },
+    spec: {
+      podSelector: {
+        matchLabels: {
+          app: 'gitpod',
+          component: 'ws-manager-bridge',
+        },
+      },
+      policyTypes: ['Ingress'],
+      ingress: [{
+        from: [{
+          podSelector: {
+            matchLabels: $._config.prometheusLabels,
+          },
+          namespaceSelector: {
+            matchLabels: {
+              namespace: $._config.namespace,
+            },
+          },
+        }],
+      }],
+    },
+  },
+
   // Not necessary as ws-proxy doesn't expose metrics
   wsProxyService:: {},
   wsProxyServiceMonitor:: {},
+  wsProxyNetworkPolicy:: {},
 
   wsSchedulerService: {
     apiVersion: 'v1',
@@ -591,5 +909,34 @@ function(params) {
     },
   },
 
-
+  wsSchedulerNetworkPolicy: {
+    apiVersion: 'networking.k8s.io/v1',
+    kind: 'NetworkPolicy',
+    metadata: {
+      name: 'ws-scheduler-allow-kube-prometheus',
+      namespace: $._config.gitpodNamespace,
+      labels: $._config.commonLabels,
+    },
+    spec: {
+      podSelector: {
+        matchLabels: {
+          app: 'gitpod',
+          component: 'ws-scheduler',
+        },
+      },
+      policyTypes: ['Ingress'],
+      ingress: [{
+        from: [{
+          podSelector: {
+            matchLabels: $._config.prometheusLabels,
+          },
+          namespaceSelector: {
+            matchLabels: {
+              namespace: $._config.namespace,
+            },
+          },
+        }],
+      }],
+    },
+  },
 }

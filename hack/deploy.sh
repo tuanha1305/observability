@@ -78,15 +78,7 @@ if [[ $exist == 1 ]]; then
 fi
 
 
-# Create namespace if it doesn't exist
-# Preview environment namespaces usually do.
-kubectl get ns ${NAMESPACE:-cluster-monitoring} >/dev/null 2>&1
-exist=$?
-if [[ $exist == 1 ]]; then
-  kubectl apply -f manifests/namespace.yaml
-fi
-
-# 
+kubectl apply -f manifests/namespace.yaml
 kubectl apply -f manifests/podsecuritypolicy-restricted.yaml
 
 # Prometheus-operator should be present on the cluster prior to setting up
