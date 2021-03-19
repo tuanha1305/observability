@@ -22,7 +22,7 @@
 
     ingressService: $.grafana.service {
       metadata+: {
-        name: 'grafana-loadbalancer',
+        name: 'grafana-lb',
         annotations+: {
           'cloud.google.com/backend-config': '{"ports": {"3000":"' + $.grafana.backendOAuth.metadata.name + '"}}',  // same name as backend-config
         },
@@ -51,25 +51,27 @@
         name: 'grafana',
         namespace: std.extVar('namespace'),
       },
-      rules: [{
-        host: std.extVar('dns_name'),  // gcp's external ip address
-        http: {
-          paths: [{
-            backend: {
-              serviceName: $.grafana.ingressService.metadata.name,  // same name put on service resource
-              servicePort: 3000,
-            },
-            path: '/*',
-          }],
-        },
+      spec: {
+        rules: [{
+          host: std.extVar('dns_name'),  // gcp's external ip address
+          http: {
+            paths: [{
+              backend: {
+                serviceName: $.grafana.ingressService.metadata.name,  // same name put on service resource
+                servicePort: 3000,
+              },
+              path: '/*',
+            }],
+          },
 
-      }],
-      tls: [{
-        hosts: [
-          std.extVar('dns_name'),
-        ],
-        secretName: $.grafana.certificate.spec.secretName,
-      }],
+        }],
+        tls: [{
+          hosts: [
+            std.extVar('dns_name'),
+          ],
+          secretName: $.grafana.certificate.spec.secretName,
+        }],
+      },
     },
 
     backendOAuthSecret: {
@@ -81,8 +83,8 @@
         labels: $.grafana.service.metadata.labels,
       },
       data: {
-        client_id: std.base64(std.extVar('IAP_client_id')),  // Get from IAP console as variable, needs to be encoded with base64
-        client_secret: std.base64(std.extVar('IAP_client_secret')),  // Get from IAP console as variable, needs to be encoded with base64
+        client_id: std.base64(std.extVar('IAP_client_id')),
+        client_secret: std.base64(std.extVar('IAP_client_secret')),
       },
     },
 

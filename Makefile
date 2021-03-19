@@ -4,7 +4,7 @@ setup-workspace:
 	go get github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb
 	go get github.com/brancz/gojsontoyaml
 	jb init
-	jb install github.com/prometheus-operator/kube-prometheus/jsonnet/kube-prometheus@e00cb56537dd268c5d02920c3668b8f02ec73dbe
+	jb install github.com/prometheus-operator/kube-prometheus/jsonnet/kube-prometheus@main
 
 build:
 	./hack/build.sh main.jsonnet
