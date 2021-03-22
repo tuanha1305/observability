@@ -28,6 +28,19 @@ function(params) {
       g._config.mixin._config,
   },
 
+  prometheusRule: {
+    apiVersion: 'monitoring.coreos.com/v1',
+    kind: 'PrometheusRule',
+    metadata: {
+      name: 'gitpod-monitoring-rules',
+      namespace: $._config.namespace,
+      labels: $._config.commonLabels + $._config.mixin.ruleLabels,
+    },
+    spec: {
+      groups: $.mixin.prometheusRules.groups + $.mixin.prometheusAlerts.groups,
+    },
+  },
+
   // Service can only find pods within the same namespace, so it gotta be the same where gitpod was deployed.
   agentSmithService: {
     apiVersion: 'v1',

@@ -15,6 +15,7 @@ local kp =
         namespace: std.extVar('namespace'),
         gitpodNamespace: 'default',
         prometheusLabels: $.prometheus.prometheus.metadata.labels,
+        mixin+: { ruleLabels: $.values.common.ruleLabels },
       },
 
       prometheus+: {
