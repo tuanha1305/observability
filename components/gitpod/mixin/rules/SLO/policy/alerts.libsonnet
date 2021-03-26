@@ -7,12 +7,12 @@
           // Please read this entire page: https://sre.google/workbook/alerting-on-slos/
           // We are alerting on strategy #6
           {
-            alert: 'GitpodAgentSmithPolicySaturationBurn',
+            alert: 'GitpodAgentSmithPolicySaturationBudgetBurn',
             labels: {
               severity: 'critical',
             },
             annotations: {
-              runbook_url: 'https://www.notion.so/gitpod/GitpodAgentSmithPolicySaturationBurn',
+              runbook_url: 'https://www.notion.so/gitpod/GitpodAgentSmithPolicySaturationBudgetBurn',
               summary: 'Error budget is being burn too quickly.',
               description: 'Error budget is being burn too quickly. At this rate, the whole monthly budget will be burnt in less than 2 days.',
             },
@@ -31,12 +31,12 @@
             |||,
           },
           {
-            alert: 'GitpodAgentSmithPolicySaturationBurn',
+            alert: 'GitpodAgentSmithPolicySaturationBudgetBurn',
             labels: {
               severity: 'warning',
             },
             annotations: {
-              runbook_url: 'https://www.notion.so/gitpod/GitpodAgentSmithPolicySaturationBurn',
+              runbook_url: 'https://www.notion.so/gitpod/GitpodAgentSmithPolicySaturationBudgetBurn',
               summary: 'Error budget is being burn quickly.',
               description: 'Error budget is being burn quickly. At this rate, the whole monthly budget will be burnt in less than 10 days.',
             },
