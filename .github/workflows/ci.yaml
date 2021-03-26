@@ -1,0 +1,37 @@
+name: ci
+on:
+  - push
+env:
+  golang-version: '1.15'
+jobs:
+  jsonnet-lint:
+    runs-on: ubuntu-latest
+    name: Jsonnet linter
+    steps:
+    - uses: actions/checkout@v2
+    - run: make --always-make lint
+  jsonnet-fmt:
+    runs-on: ubuntu-latest
+    name: Jsonnet formatter
+    steps:
+    - uses: actions/checkout@v2
+    - run: make --always-make fmt && git diff --exit-code
+  promtool-generate:
+    runs-on: ubuntu-latest
+    name: Check for consistent generated code
+    steps:
+    - uses: actions/checkout@v2
+    - run: make --always-make gitpod-mixin && git diff --exit-code
+  promtool-lint:
+    runs-on: ubuntu-latest
+    name: Prometheus alerts and recording rules linter
+    steps:
+    - uses: actions/checkout@v2
+    - name: Check Prometheus alert rules
+      uses: peimanja/promtool-github-actions@master
+      with:
+        promtool_actions_subcommand: 'rules'
+        promtool_actions_files: 'components/gitpod/mixin/prometheus_rules.yaml'
+        promtool_actions_comment: true
+
+        

@@ -1,0 +1,172 @@
+"groups":
+- "name": "gitpod-login-slo-alerts"
+  "rules":
+  - "alert": "GitpodLoginErrorBudgetBurn"
+    "annotations":
+      "description": "Error budget is being burn too quickly. At this rate, the whole monthly budget will be burnt in less than 2 days."
+      "runbook_url": "https://www.notion.so/gitpod/GitpodLoginErrorBudgetBurn"
+      "summary": "Error budget is being burn too quickly."
+    "expr": |
+      (
+        gitpod_server_login_requests_total:1h_failure_ratio > (14.4 * (1 - gitpod_server_login_requests_total:slo_target))
+        and
+        gitpod_server_login_requests_total:5m_failure_ratio > (14.4 * (1 - gitpod_server_login_requests_total:slo_target))
+      )
+      or
+      (
+        gitpod_server_login_requests_total:6h_failure_ratio > (6 * (1 - gitpod_server_login_requests_total:slo_target))
+        and
+        gitpod_server_login_requests_total:30m_failure_ratio > (6 * (1 - gitpod_server_login_requests_total:slo_target))
+      )
+    "labels":
+      "severity": "critical"
+  - "alert": "GitpodLoginErrorBudgetBurn"
+    "annotations":
+      "description": "Error budget is being burn quickly. At this rate, the whole monthly budget will be burnt in less than 10 days."
+      "runbook_url": "https://www.notion.so/gitpod/GitpodLoginErrorBudgetBurn"
+      "summary": "Error budget is being burn quickly."
+    "expr": |
+      (
+        gitpod_server_login_requests_total:1d_failure_ratio > (3 * (1 - gitpod_server_login_requests_total:slo_target))
+        and
+        gitpod_server_login_requests_total:2h_failure_ratio > (3 * (1 - gitpod_server_login_requests_total:slo_target))
+      )
+      or
+      (
+        gitpod_server_login_requests_total:3d_failure_ratio > (1 * (1 - gitpod_server_login_requests_total:slo_target))
+        and
+        gitpod_server_login_requests_total:6h_failure_ratio > (1 * (1 - gitpod_server_login_requests_total:slo_target))
+      )
+    "labels":
+      "severity": "warning"
+- "name": "gitpod-policy-slo-alerts"
+  "rules":
+  - "alert": "GitpodAgentSmithPolicySaturationBudgetBurn"
+    "annotations":
+      "description": "Error budget is being burn too quickly. At this rate, the whole monthly budget will be burnt in less than 2 days."
+      "runbook_url": "https://www.notion.so/gitpod/GitpodAgentSmithPolicySaturationBudgetBurn"
+      "summary": "Error budget is being burn too quickly."
+    "expr": |
+      (
+        gitpod_agent_smith_policed_workspaces:1h_saturation_ratio > (14.4 * (1 - gitpod_server_login_requests_total:slo_target))
+        and
+        gitpod_agent_smith_policed_workspaces:5m_saturation_ratio > (14.4 * (1 - gitpod_server_login_requests_total:slo_target))
+      )
+      or
+      (
+        gitpod_agent_smith_policed_workspaces:6h_saturation_ratio > (6 * (1 - gitpod_server_login_requests_total:slo_target))
+        and
+        gitpod_agent_smith_policed_workspaces:30m_saturation_ratio > (6 * (1 - gitpod_server_login_requests_total:slo_target))
+      )
+    "labels":
+      "severity": "critical"
+  - "alert": "GitpodAgentSmithPolicySaturationBudgetBurn"
+    "annotations":
+      "description": "Error budget is being burn quickly. At this rate, the whole monthly budget will be burnt in less than 10 days."
+      "runbook_url": "https://www.notion.so/gitpod/GitpodAgentSmithPolicySaturationBudgetBurn"
+      "summary": "Error budget is being burn quickly."
+    "expr": |
+      (
+        gitpod_agent_smith_policed_workspaces:1d_saturation_ratio > (3 * (1 - gitpod_server_login_requests_total:slo_target))
+        and
+        gitpod_agent_smith_policed_workspaces:2h_saturation_ratio > (3 * (1 - gitpod_server_login_requests_total:slo_target))
+      )
+      or
+      (
+        gitpod_agent_smith_policed_workspaces:3d_saturation_ratio > (1 * (1 - gitpod_server_login_requests_total:slo_target))
+        and
+        gitpod_agent_smith_policed_workspaces:6h_saturation_ratio > (1 * (1 - gitpod_server_login_requests_total:slo_target))
+      )
+    "labels":
+      "severity": "warning"
+- "name": "gitpod-login-slo-records"
+  "rules":
+  - "expr": |
+      sum(rate(gitpod_server_login_requests_total{status="failed"}[5m]))
+      /
+      sum(rate(gitpod_server_login_requests_total[5m]))
+    "record": "gitpod_server_login_requests_total:5m_failure_ratio"
+  - "expr": |
+      sum(rate(gitpod_server_login_requests_total{status="failed"}[30m]))
+      /
+      sum(rate(gitpod_server_login_requests_total[30m]))
+    "record": "gitpod_server_login_requests_total:30m_failure_ratio"
+  - "expr": |
+      sum(rate(gitpod_server_login_requests_total{status="failed"}[1h]))
+      /
+      sum(rate(gitpod_server_login_requests_total[1h]))
+    "record": "gitpod_server_login_requests_total:1h_failure_ratio"
+  - "expr": |
+      sum(rate(gitpod_server_login_requests_total{status="failed"}[2h]))
+      /
+      sum(rate(gitpod_server_login_requests_total[2h]))
+    "record": "gitpod_server_login_requests_total:2h_failure_ratio"
+  - "expr": |
+      sum(rate(gitpod_server_login_requests_total{status="failed"}[6h]))
+      /
+      sum(rate(gitpod_server_login_requests_total[6h]))
+    "record": "gitpod_server_login_requests_total:6h_failure_ratio"
+  - "expr": |
+      sum(rate(gitpod_server_login_requests_total{status="failed"}[1d]))
+      /
+      sum(rate(gitpod_server_login_requests_total[1d]))
+    "record": "gitpod_server_login_requests_total:1d_failure_ratio"
+  - "expr": |
+      sum(rate(gitpod_server_login_requests_total{status="failed"}[3d]))
+      /
+      sum(rate(gitpod_server_login_requests_total[3d]))
+    "record": "gitpod_server_login_requests_total:3d_failure_ratio"
+  - "expr": |
+      sum(rate(gitpod_server_login_requests_total{status="failed"}[30d]))
+      /
+      sum(rate(gitpod_server_login_requests_total[30d]))
+    "record": "gitpod_server_login_requests_total:30d_failure_ratio"
+  - "expr": "0.95"
+    "record": "gitpod_server_login_requests_total:slo_target"
+  - "expr": "gitpod_server_login_requests_total:monthly_availability - gitpod_server_login_requests_total:slo_target"
+    "record": "gitpod_server_login_requests_total:error_budget_remaining"
+  - "expr": "1 - gitpod_server_login_requests_total:30d_failure_ratio"
+    "record": "gitpod_server_login_requests_total:monthly_availability"
+- "name": "gitpod-policy-slo-records"
+  "rules":
+  - "expr": |
+      sum(rate(gitpod_agent_smith_discovered_workspaces_total[5m]))
+      /
+      sum(rate(gitpod_agent_smith_policed_workspaces_total[5m]))
+    "record": "gitpod_agent_smith_policed_workspaces:5m_saturation_ratio"
+  - "expr": |
+      sum(rate(gitpod_agent_smith_discovered_workspaces_total[30m]))
+      /
+      sum(rate(gitpod_agent_smith_policed_workspaces_total[30m]))
+    "record": "gitpod_agent_smith_policed_workspaces:30m_saturation_ratio"
+  - "expr": |
+      sum(rate(gitpod_agent_smith_discovered_workspaces_total[1h]))
+      /
+      sum(rate(gitpod_agent_smith_policed_workspaces_total[1h]))
+    "record": "gitpod_agent_smith_policed_workspaces:1h_saturation_ratio"
+  - "expr": |
+      sum(rate(gitpod_agent_smith_discovered_workspaces_total[2h]))
+      /
+      sum(rate(gitpod_agent_smith_policed_workspaces_total[2h]))
+    "record": "gitpod_agent_smith_policed_workspaces:2h_saturation_ratio"
+  - "expr": |
+      sum(rate(gitpod_agent_smith_discovered_workspaces_total[6h]))
+      /
+      sum(rate(gitpod_agent_smith_policed_workspaces_total[6h]))
+    "record": "gitpod_agent_smith_policed_workspaces:6h_saturation_ratio"
+  - "expr": |
+      sum(rate(gitpod_agent_smith_discovered_workspaces_total[1d]))
+      /
+      sum(rate(gitpod_agent_smith_policed_workspaces_total[1d]))
+    "record": "gitpod_agent_smith_policed_workspaces:1d_saturation_ratio"
+  - "expr": |
+      sum(rate(gitpod_agent_smith_discovered_workspaces_total[30d]))
+      /
+      sum(rate(gitpod_agent_smith_policed_workspaces_total[30d]))
+    "record": "gitpod_agent_smith_policed_workspaces:30d_saturation_ratio"
+  - "expr": "0.95"
+    "record": "gitpod_agent_smith_policed_workspaces:slo_target"
+  - "expr": "gitpod_agent_smith_policed_workspaces:monthly_availability - gitpod_agent_smith_policed_workspaces:slo_target"
+    "record": "gitpod_agent_smith_policed_workspaces:error_budget_remaining"
+  - "expr": "1 - apiagent_smith_request_total:30d_failure_ratio"
+    "record": "gitpod_agent_smith_policed_workspaces:monthly_availability"
