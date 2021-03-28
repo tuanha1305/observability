@@ -2,7 +2,7 @@
   prometheusRules+:: {
     groups+: [
       {
-        name: 'gitpod-login-slo-records',
+        name: 'gitpod-policy-slo-records',
         rules: [
           {
             record: 'gitpod_agent_smith_policed_workspaces:5m_saturation_ratio',
@@ -62,7 +62,7 @@
           },
           {
             record: 'gitpod_agent_smith_policed_workspaces:slo_target',
-            expr: 0.95,
+            expr: '0.95',
           },
           {
             record: 'gitpod_agent_smith_policed_workspaces:error_budget_remaining',

@@ -70,7 +70,7 @@
           },
           {
             record: 'gitpod_server_login_requests_total:slo_target',
-            expr: 0.95,
+            expr: '0.95',
           },
           {
             record: 'gitpod_server_login_requests_total:error_budget_remaining',
