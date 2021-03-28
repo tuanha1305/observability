@@ -3,6 +3,16 @@
 image: eu.gcr.io/gitpod-core-dev/dev/dev-environment:aledbf-dev-image.0
 tasks: 
   - init: make --always-make
+github:
+  prebuilds:
+    master: true
+    branches: true
+    pullRequests: true
+    pullRequestsFromForks: true
+    addCheck: true
+    addComment: true
+    addBadge: true
+    addLabel: gitpod-prebuild-done
 vscode:
   extensions:
     - heptio.jsonnet@0.1.0:woEDU5N62LRdgdz0g/I6sQ==
