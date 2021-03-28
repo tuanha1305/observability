@@ -79,6 +79,26 @@
       )
     "labels":
       "severity": "warning"
+- "name": "gitpod-component-db-sync-alerts"
+  "rules":
+  - "alert": "GitpodDBSyncSynchronizationFallingBehind"
+    "annotations":
+      "description": "95% of db-sync synchronizations are taking longer than the configured cycle period for more than 10m."
+      "runbook_url": "https://www.notion.so/gitpod/GitpodDBSyncSynchronizationFallingBehind"
+      "summary": "DB-Sync synchronization cycles are falling behind."
+    "expr": "gitpod_db_sync_cycle_duration_seconds:95th_percentile > gitpod_db_sync_configured_sync_interval_info"
+    "for": "10m"
+    "labels":
+      "severity": "warning"
+  - "alert": "GitpodDBSyncSynchronizationFallingBehind"
+    "annotations":
+      "description": "50% of db-sync synchronizations are taking longer than the configured cycle period for more than 10m."
+      "runbook_url": "https://www.notion.so/gitpod/GitpodDBSyncSynchronizationFallingBehind"
+      "summary": "DB-Sync synchronization cycles are falling behind."
+    "expr": "gitpod_db_sync_cycle_duration_seconds:50th_percentile > gitpod_db_sync_configured_sync_interval_info"
+    "for": "10m"
+    "labels":
+      "severity": "critical"
 - "name": "gitpod-login-slo-records"
   "rules":
   - "expr": |
@@ -170,3 +190,16 @@
     "record": "gitpod_agent_smith_policed_workspaces:error_budget_remaining"
   - "expr": "1 - apiagent_smith_request_total:30d_failure_ratio"
     "record": "gitpod_agent_smith_policed_workspaces:monthly_availability"
+- "name": "gitpod-component-db-sync-records"
+  "rules":
+  - "expr": "histogram_quantile(0.99, sum(rate(gitpod_db_sync_cycle_duration_seconds_bucket[5m])) by (le))"
+    "record": "gitpod_db_sync_cycle_duration_seconds:99th_percentile"
+  - "expr": "histogram_quantile(0.95, sum(rate(gitpod_db_sync_cycle_duration_seconds_bucket[5m])) by (le))"
+    "record": "gitpod_db_sync_cycle_duration_seconds:95th_percentile"
+  - "expr": "histogram_quantile(0.50, sum(rate(gitpod_db_sync_cycle_duration_seconds_bucket[5m])) by (le))"
+    "record": "gitpod_db_sync_cycle_duration_seconds:50th_percentile"
+  - "expr": |
+      sum(rate(gitpod_db_sync_cycle_duration_seconds_sum[5m]))
+      /
+      sum(rate(gitpod_db_sync_cycle_duration_seconds_count[5m]))
+    "record": "gitpod_db_sync_cycle_duration_seconds:avg"
