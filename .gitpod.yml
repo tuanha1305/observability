@@ -12,7 +12,7 @@ github:
     addCheck: true
     addComment: true
     addBadge: true
-    addLabel: true
+    addLabel: gitpod-prebuild-done
 vscode:
   extensions:
     - heptio.jsonnet@0.1.0:woEDU5N62LRdgdz0g/I6sQ==
