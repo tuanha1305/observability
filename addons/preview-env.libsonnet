@@ -21,14 +21,4 @@
       },
     },
   },
-
-  kubePrometheus+: {
-    namespace+: {
-      metadata+: {
-        labels+: {
-          namespace: std.extVar('namespace'),
-        },
-      },
-    },
-  },
 }
