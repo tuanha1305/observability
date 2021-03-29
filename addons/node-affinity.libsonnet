@@ -9,7 +9,6 @@
     },
   },
 
-
   alertmanager+: {
     alertmanager+: {
       spec+: {
@@ -21,6 +20,34 @@
   },
 
   grafana+: {
+    deployment+: {
+      spec+: {
+        template+: {
+          spec+: {
+            nodeSelector+: {
+              'cloud.google.com/gke-nodepool': 'monitoring-pool-0',
+            },
+          },
+        },
+      },
+    },
+  },
+
+  prometheusOperator+: {
+    deployment+: {
+      spec+: {
+        template+: {
+          spec+: {
+            nodeSelector+: {
+              'cloud.google.com/gke-nodepool': 'monitoring-pool-0',
+            },
+          },
+        },
+      },
+    },
+  },
+
+  kubeStateMetrics+: {
     deployment+: {
       spec+: {
         template+: {
