@@ -101,7 +101,6 @@ function(params) {
     spec: {
       podSelector: {
         matchLabels: {
-          app: 'gitpod',
           component: 'agent-smith',
         },
       },
@@ -180,7 +179,6 @@ function(params) {
     spec: {
       podSelector: {
         matchLabels: {
-          app: 'gitpod',
           component: 'blobserve',
         },
       },
@@ -259,7 +257,6 @@ function(params) {
     spec: {
       podSelector: {
         matchLabels: {
-          app: 'gitpod',
           component: 'content-service',
         },
       },
@@ -358,7 +355,6 @@ function(params) {
     spec: {
       podSelector: {
         matchLabels: {
-          app: 'gitpod',
           component: 'image-builder',
         },
       },
@@ -437,7 +433,6 @@ function(params) {
     spec: {
       podSelector: {
         matchLabels: {
-          app: 'gitpod',
           component: 'messagebus',
         },
       },
@@ -521,7 +516,6 @@ function(params) {
     spec: {
       podSelector: {
         matchLabels: {
-          app: 'gitpod',
           component: 'registry-facade',
         },
       },
@@ -601,7 +595,6 @@ function(params) {
     spec: {
       podSelector: {
         matchLabels: {
-          app: 'gitpod',
           component: 'server',
         },
       },
@@ -680,7 +673,6 @@ function(params) {
     spec: {
       podSelector: {
         matchLabels: {
-          app: 'gitpod',
           component: 'ws-daemon',
         },
       },
@@ -759,7 +751,6 @@ function(params) {
     spec: {
       podSelector: {
         matchLabels: {
-          app: 'gitpod',
           component: 'ws-manager',
         },
       },
@@ -838,7 +829,6 @@ function(params) {
     spec: {
       podSelector: {
         matchLabels: {
-          app: 'gitpod',
           component: 'ws-manager-bridge',
         },
       },
@@ -922,7 +912,6 @@ function(params) {
     spec: {
       podSelector: {
         matchLabels: {
-          app: 'gitpod',
           component: 'ws-scheduler',
         },
       },
