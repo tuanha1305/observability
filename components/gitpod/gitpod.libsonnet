@@ -54,7 +54,6 @@ function(params) {
     },
     spec: {
       selector: {
-        app: 'gitpod',
         component: 'agent-smith',
       },
       ports: [{
@@ -134,7 +133,6 @@ function(params) {
     },
     spec: {
       selector: {
-        app: 'gitpod',
         component: 'blobserve',
       },
       ports: [{
@@ -214,7 +212,6 @@ function(params) {
     },
     spec: {
       selector: {
-        app: 'gitpod',
         component: 'content-service',
       },
       ports: [{
@@ -314,7 +311,6 @@ function(params) {
     },
     spec: {
       selector: {
-        app: 'gitpod',
         component: 'image-builder',
       },
       ports: [{
@@ -394,7 +390,6 @@ function(params) {
     },
     spec: {
       selector: {
-        app: 'gitpod',
         component: 'messagebus',
       },
       ports: [{
@@ -479,7 +474,6 @@ function(params) {
     },
     spec: {
       selector: {
-        app: 'gitpod',
         component: 'registry-facade',
       },
       ports: [{
@@ -559,7 +553,6 @@ function(params) {
     },
     spec: {
       selector: {
-        app: 'gitpod',
         component: 'server',
       },
       ports: [{
@@ -640,7 +633,6 @@ function(params) {
     },
     spec: {
       selector: {
-        app: 'gitpod',
         component: 'ws-daemon',
       },
       ports: [{
@@ -720,7 +712,6 @@ function(params) {
     },
     spec: {
       selector: {
-        app: 'gitpod',
         component: 'ws-manager',
       },
       ports: [{
@@ -800,7 +791,6 @@ function(params) {
     },
     spec: {
       selector: {
-        app: 'gitpod',
         component: 'ws-manager-bridge',
       },
       ports: [{
@@ -885,7 +875,6 @@ function(params) {
     },
     spec: {
       selector: {
-        app: 'gitpod',
         component: 'ws-scheduler',
       },
       ports: [{
