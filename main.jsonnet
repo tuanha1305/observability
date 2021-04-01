@@ -5,6 +5,7 @@ local kp =
   (import 'kube-prometheus/platforms/gke.libsonnet') +
   (import 'kube-prometheus/addons/podsecuritypolicies.libsonnet') +
   (import './addons/disable-grafana-auth.libsonnet') +
+  (import './addons/gitpod-runbooks.libsonnet') +
   {
     values+:: {
       common+: {
