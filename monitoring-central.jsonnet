@@ -27,6 +27,14 @@ local kp =
           editable: false,
         }],
       },
+
+      kubernetesControlPlane+: {
+        mixin+: {
+          _config+: {
+            showMultiCluster: true,
+          },
+        },
+      },
     },
 
     // Included just to generate gitpod dashboards. No need to generate any YAML.
