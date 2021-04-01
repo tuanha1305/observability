@@ -33,14 +33,6 @@ local kp =
       grafana+: {
         dashboards+: $.gitpod.mixin.grafanaDashboards,
       },
-
-      kubernetesControlPlane+: {
-        mixin+: {
-          _config+: {
-            showMultiCluster: true,
-          },
-        },
-      },
     },
 
     gitpod: gitpod($.values.gitpodParams),
