@@ -12,7 +12,7 @@
               severity: 'critical',
             },
             annotations: {
-              runbook_url: 'https://www.notion.so/gitpod/GitpodAgentSmithPolicySaturationBudgetBurn',
+              runbook_url: 'https://www.github.com/gitpod-io/runbooks/GitpodAgentSmithPolicySaturationBudgetBurn.md',
               summary: 'Error budget is being burn too quickly.',
               description: 'Error budget is being burn too quickly. At this rate, the whole monthly budget will be burnt in less than 2 days.',
             },
@@ -36,7 +36,7 @@
               severity: 'warning',
             },
             annotations: {
-              runbook_url: 'https://www.notion.so/gitpod/GitpodAgentSmithPolicySaturationBudgetBurn',
+              runbook_url: 'https://www.github.com/gitpod-io/runbooks/GitpodAgentSmithPolicySaturationBudgetBurn.md',
               summary: 'Error budget is being burn quickly.',
               description: 'Error budget is being burn quickly. At this rate, the whole monthly budget will be burnt in less than 10 days.',
             },
