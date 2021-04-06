@@ -386,11 +386,11 @@ function(params) {
     },
     spec: {
       selector: {
-        component: 'messagebus',
+        'app.kubernetes.io/name': 'rabbitmq',
       },
       ports: [{
         name: 'metrics',
-        port: 15692,
+        port: 9419,
       }],
     },
   },
