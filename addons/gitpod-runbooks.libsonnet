@@ -1,48 +1,46 @@
-local commonRunbookURLPatern = 'https://www.notion.so/gitpod/%s';
+local k8sUtils = (import 'github.com/kubernetes-monitoring/kubernetes-mixin/lib/utils.libsonnet');
+
+local addRunbookURL(rule) = rule {
+  [if 'alert' in rule then 'annotations']+: {
+    runbook_url: 'https://www.github.com/gitpod-io/runbooks/%s' % rule.alert + '.md',
+  },
+};
 
 {
-  values+:: {
-    prometheus+: {
-      mixin+: {
-        _config+: {
-          runbookURLPattern: commonRunbookURLPatern,
-        },
-      },
+  prometheus+: {
+    prometheusRule+: {
+      spec+:
+        k8sUtils.mapRuleGroups(addRunbookURL),
     },
-    alertmanager+: {
-      mixin+: {
-        _config+: {
-          runbookURLPattern: commonRunbookURLPatern,
-        },
-      },
+  },
+  alertmanager+: {
+    prometheusRule+: {
+      spec+:
+        k8sUtils.mapRuleGroups(addRunbookURL),
     },
-    kubeStateMetrics+: {
-      mixin+: {
-        _config+: {
-          runbookURLPattern: commonRunbookURLPatern,
-        },
-      },
+  },
+  kubeStateMetrics+: {
+    prometheusRule+: {
+      spec+:
+        k8sUtils.mapRuleGroups(addRunbookURL),
     },
-    kubernetesControlPlane+: {
-      mixin+: {
-        _config+: {
-          runbookURLPattern: commonRunbookURLPatern,
-        },
-      },
+  },
+  kubernetesControlPlane+: {
+    prometheusRule+: {
+      spec+:
+        k8sUtils.mapRuleGroups(addRunbookURL),
     },
-    nodeExporter+: {
-      mixin+: {
-        _config+: {
-          runbookURLPattern: commonRunbookURLPatern,
-        },
-      },
+  },
+  nodeExporter+: {
+    prometheusRule+: {
+      spec+:
+        k8sUtils.mapRuleGroups(addRunbookURL),
     },
-    prometheusOperator+: {
-      mixin+: {
-        _config+: {
-          runbookURLPattern: commonRunbookURLPatern,
-        },
-      },
+  },
+  prometheusOperator+: {
+    prometheusRule+: {
+      spec+:
+        k8sUtils.mapRuleGroups(addRunbookURL),
     },
   },
 }
