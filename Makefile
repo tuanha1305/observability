@@ -41,7 +41,7 @@ deploy:
 
 .PHONY: deploy-monitoring-central
 deploy-monitoring-central: 
-	kubectl apply -f manifests/grafana/
+	kubectl apply -f manifests/grafana/ -f manifests/victoriametrics/
 
 .PHONY: delete
 delete: 
@@ -49,7 +49,7 @@ delete:
 
 .PHONY: delete-monitoring-central
 delete-monitoring-central: 
-	kubectl delete -f manifests/grafana/
+	kubectl delete -f manifests/grafana/ -f manifests/victoriametrics/
 
 .PHONY: gitpod-mixin
 gitpod-mixin: $(JSONNET_BIN)

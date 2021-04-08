@@ -1,4 +1,5 @@
 local gitpod = import './components/gitpod/gitpod.libsonnet';
+local victoriaMetrics = import './components/victoriametrics/victoriametrics.libsonnet';
 
 local kp =
   (import 'kube-prometheus/main.libsonnet') +
@@ -15,6 +16,12 @@ local kp =
       gitpodParams: {
         namespace: std.extVar('namespace'),
       },
+      victoriametricsParams: {
+        name: 'victoriametrics',
+        namespace: 'monitoring-central',
+        port: 8428,
+        internalLoadBalancerIP: '10.128.0.25',
+      },
       grafana+: {
         dashboards+: $.gitpod.mixin.grafanaDashboards,
         datasources: [{
@@ -22,7 +29,7 @@ local kp =
           type: 'prometheus',
           access: 'proxy',
           orgId: 1,
-          url: 'http://victoriametrics.' + $.values.common.namespace + '.svc:8428',
+          url: 'http://' + $.values.victoriametricsParams.name + '.' + $.values.victoriametricsParams.namespace + '.svc:' + $.values.victoriametricsParams.port,
           version: 1,
           editable: false,
         }],
@@ -39,7 +46,7 @@ local kp =
 
     // Included just to generate gitpod dashboards. No need to generate any YAML.
     gitpod: gitpod($.values.gitpodParams),
-
+    victoriametrics: victoriaMetrics($.values.victoriametricsParams),
     grafana+: {
       // Disabling serviceMonitor for monitoring-central since there is no prometheus running there.
       serviceMonitor:: {},
@@ -51,4 +58,5 @@ local manifests = kp;
 
 { namespace: manifests.kubePrometheus.namespace } +
 { 'podsecuritypolicy-restricted': manifests.restrictedPodSecurityPolicy } +
-{ ['grafana/' + name]: manifests.grafana[name] for name in std.objectFields(manifests.grafana) }
+{ ['grafana/' + name]: manifests.grafana[name] for name in std.objectFields(manifests.grafana) } +
+{ ['victoriametrics/' + name]: manifests.victoriametrics[name] for name in std.objectFields(manifests.victoriametrics) }
