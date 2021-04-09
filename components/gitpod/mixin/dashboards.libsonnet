@@ -23,5 +23,6 @@
 
     // SLOs
     'gitpod-slo-login.json': (import 'dashboards/SLOs/login.json'),
+    'gitpod-slo-policy.json': (import 'dashboards/SLOs/policy.json'),
   },
 }
