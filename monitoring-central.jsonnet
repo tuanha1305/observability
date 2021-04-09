@@ -20,7 +20,7 @@ local kp =
         name: 'victoriametrics',
         namespace: 'monitoring-central',
         port: 8428,
-        internalLoadBalancerIP: '10.128.0.25',
+        internalLoadBalancerIP: '10.32.0.25',
       },
       grafana+: {
         dashboards+: $.gitpod.mixin.grafanaDashboards,
