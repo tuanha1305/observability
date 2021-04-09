@@ -1,0 +1,539 @@
+{
+    "__requires": [
+      {
+        "type": "grafana",
+        "id": "grafana",
+        "name": "Grafana",
+        "version": "7.4.3"
+      },
+      {
+        "type": "panel",
+        "id": "graph",
+        "name": "Graph",
+        "version": ""
+      },
+      {
+        "type": "datasource",
+        "id": "prometheus",
+        "name": "Prometheus",
+        "version": "1.0.0"
+      },
+      {
+        "type": "panel",
+        "id": "stat",
+        "name": "Stat",
+        "version": ""
+      }
+    ],
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 1,
+    "id": null,
+    "iteration": 1617983563162,
+    "links": [],
+    "panels": [
+      {
+        "cacheTimeout": null,
+        "datasource": "$datasource",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {},
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "light-red",
+                  "value": null
+                },
+                {
+                  "color": "dark-green",
+                  "value": 0
+                },
+                {
+                  "color": "rgb(255, 255, 255)",
+                  "value": 0.95
+                }
+              ]
+            },
+            "unit": "percentunit"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 11,
+          "x": 7,
+          "y": 0
+        },
+        "id": 4,
+        "interval": null,
+        "links": [],
+        "maxDataPoints": 100,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "last"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "value_and_name"
+        },
+        "pluginVersion": "7.4.3",
+        "repeat": null,
+        "targets": [
+          {
+            "expr": "0.95",
+            "format": "time_series",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "Availability target",
+            "refId": "A"
+          },
+          {
+            "expr": "(1 - \n  (\n    1 - (\r\n          sum(rate(gitpod_agent_smith_discovered_workspaces_total[5m]))\r\n          /\r\n          sum(rate(gitpod_agent_smith_policed_workspaces_total[5m]))\r\n        )\n  )\n) - 0.95",
+            "interval": "",
+            "legendFormat": "Monthly error budget remaining",
+            "refId": "B"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "SLO and Error budget",
+        "type": "stat"
+      },
+      {
+        "collapsed": false,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 4
+        },
+        "id": 6,
+        "panels": [],
+        "title": "Burn ratios",
+        "type": "row"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$datasource",
+        "decimals": 2,
+        "fieldConfig": {
+          "defaults": {
+            "custom": {}
+          },
+          "overrides": []
+        },
+        "fill": 0,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 5
+        },
+        "hiddenSeries": false,
+        "id": 8,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": false,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.4.3",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [
+          {
+            "alias": "Failure ratio threshold",
+            "color": "#C4162A",
+            "fill": 0
+          },
+          {
+            "alias": "/.*failure ratio$/",
+            "color": "#E02F44",
+            "fillBelowTo": "Failure ratio threshold",
+            "lines": false,
+            "spaceLength": 20
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "1 - (\n  sum(rate(gitpod_agent_smith_discovered_workspaces_total[5m]))\n  /\n  sum(rate(gitpod_agent_smith_policed_workspaces_total[5m]))\n)",
+            "interval": "",
+            "legendFormat": "5m failure ratio",
+            "queryType": "randomWalk",
+            "refId": "A"
+          },
+          {
+            "expr": "1 - (\n  sum(rate(gitpod_agent_smith_discovered_workspaces_total[30m]))\n  /\n  sum(rate(gitpod_agent_smith_policed_workspaces_total[30m]))\n)",
+            "interval": "",
+            "legendFormat": "30m failure ratio",
+            "queryType": "randomWalk",
+            "refId": "B"
+          },
+          {
+            "expr": "1 - (\n  sum(rate(gitpod_agent_smith_discovered_workspaces_total[1h]))\n  /\n  sum(rate(gitpod_agent_smith_policed_workspaces_total[1h]))\n)",
+            "interval": "",
+            "legendFormat": "1h failure ratio",
+            "queryType": "randomWalk",
+            "refId": "C"
+          },
+          {
+            "expr": "1 - (\n  sum(rate(gitpod_agent_smith_discovered_workspaces_total[2h]))\n  /\n  sum(rate(gitpod_agent_smith_policed_workspaces_total[2h]))\n)",
+            "interval": "",
+            "legendFormat": "2h failure ratio",
+            "queryType": "randomWalk",
+            "refId": "D"
+          },
+          {
+            "expr": "1 - (\n  sum(rate(gitpod_agent_smith_discovered_workspaces_total[6h]))\n  /\n  sum(rate(gitpod_agent_smith_policed_workspaces_total[6h]))\n)",
+            "interval": "",
+            "legendFormat": "6h failure ratio",
+            "queryType": "randomWalk",
+            "refId": "E"
+          },
+          {
+            "expr": "1 - (\n  sum(rate(gitpod_agent_smith_discovered_workspaces_total[1d]))\n  /\n  sum(rate(gitpod_agent_smith_policed_workspaces_total[1d]))\n)",
+            "interval": "",
+            "legendFormat": "1d failure ratio",
+            "queryType": "randomWalk",
+            "refId": "F"
+          },
+          {
+            "expr": "1 - (\n  sum(rate(gitpod_agent_smith_discovered_workspaces_total[3d]))\n  /\n  sum(rate(gitpod_agent_smith_policed_workspaces_total[3d]))\n)",
+            "interval": "",
+            "legendFormat": "3d failure ratio",
+            "queryType": "randomWalk",
+            "refId": "G"
+          },
+          {
+            "expr": "1 - (\n  sum(rate(gitpod_agent_smith_discovered_workspaces_total[30d]))\n  /\n  sum(rate(gitpod_agent_smith_policed_workspaces_total[30d]))\n)",
+            "interval": "",
+            "legendFormat": "30d failure ratio",
+            "queryType": "randomWalk",
+            "refId": "H"
+          },
+          {
+            "expr": "0.05",
+            "interval": "",
+            "legendFormat": "Failure ratio threshold",
+            "refId": "I"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Unpoliced workspaces ratio",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "percentunit",
+            "label": null,
+            "logBase": 1,
+            "max": "1",
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$datasource",
+        "decimals": 2,
+        "fieldConfig": {
+          "defaults": {
+            "custom": {}
+          },
+          "overrides": []
+        },
+        "fill": 0,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 6,
+          "w": 12,
+          "x": 0,
+          "y": 11
+        },
+        "hiddenSeries": false,
+        "id": 9,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": false,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.4.3",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "repeat": "cluster",
+        "seriesOverrides": [
+          {
+            "alias": "Failure ratio threshold",
+            "color": "#C4162A",
+            "fill": 0
+          },
+          {
+            "alias": "/.*failure ratio$/",
+            "color": "#E02F44",
+            "fillBelowTo": "Failure ratio threshold",
+            "lines": false,
+            "spaceLength": 20
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "1 - (\n  sum(rate(gitpod_agent_smith_discovered_workspaces_total{cluster=~\"$cluster\"}[5m]))\n  /\n  sum(rate(gitpod_agent_smith_policed_workspaces_total{cluster=~\"$cluster\"}[5m]))\n)",
+            "interval": "",
+            "legendFormat": "5m failure ratio",
+            "queryType": "randomWalk",
+            "refId": "A"
+          },
+          {
+            "expr": "1 - (\n  sum(rate(gitpod_agent_smith_discovered_workspaces_total{cluster=~\"$cluster\"}[30m]))\n  /\n  sum(rate(gitpod_agent_smith_policed_workspaces_total{cluster=~\"$cluster\"}[30m]))\n)",
+            "interval": "",
+            "legendFormat": "30m failure ratio",
+            "queryType": "randomWalk",
+            "refId": "B"
+          },
+          {
+            "expr": "1 - (\n  sum(rate(gitpod_agent_smith_discovered_workspaces_total{cluster=~\"$cluster\"}[1h]))\n  /\n  sum(rate(gitpod_agent_smith_policed_workspaces_total{cluster=~\"$cluster\"}[1h]))\n)",
+            "interval": "",
+            "legendFormat": "1h failure ratio",
+            "queryType": "randomWalk",
+            "refId": "C"
+          },
+          {
+            "expr": "1 - (\n  sum(rate(gitpod_agent_smith_discovered_workspaces_total{cluster=~\"$cluster\"}[2h]))\n  /\n  sum(rate(gitpod_agent_smith_policed_workspaces_total{cluster=~\"$cluster\"}[2h]))\n)",
+            "interval": "",
+            "legendFormat": "2h failure ratio",
+            "queryType": "randomWalk",
+            "refId": "D"
+          },
+          {
+            "expr": "1 - (\n  sum(rate(gitpod_agent_smith_discovered_workspaces_total{cluster=~\"$cluster\"}[6h]))\n  /\n  sum(rate(gitpod_agent_smith_policed_workspaces_total{cluster=~\"$cluster\"}[6h]))\n)",
+            "interval": "",
+            "legendFormat": "6h failure ratio",
+            "queryType": "randomWalk",
+            "refId": "E"
+          },
+          {
+            "expr": "1 - (\n  sum(rate(gitpod_agent_smith_discovered_workspaces_total{cluster=~\"$cluster\"}[1d]))\n  /\n  sum(rate(gitpod_agent_smith_policed_workspaces_total{cluster=~\"$cluster\"}[1d]))\n)",
+            "interval": "",
+            "legendFormat": "1d failure ratio",
+            "queryType": "randomWalk",
+            "refId": "F"
+          },
+          {
+            "expr": "1 - (\n  sum(rate(gitpod_agent_smith_discovered_workspaces_total{cluster=~\"$cluster\"}[3d]))\n  /\n  sum(rate(gitpod_agent_smith_policed_workspaces_total{cluster=~\"$cluster\"}[3d]))\n)",
+            "interval": "",
+            "legendFormat": "3d failure ratio",
+            "queryType": "randomWalk",
+            "refId": "G"
+          },
+          {
+            "expr": "1 - (\n  sum(rate(gitpod_agent_smith_discovered_workspaces_total{cluster=~\"$cluster\"}[30d]))\n  /\n  sum(rate(gitpod_agent_smith_policed_workspaces_total{cluster=~\"$cluster\"}[30d]))\n)",
+            "interval": "",
+            "legendFormat": "30d failure ratio",
+            "queryType": "randomWalk",
+            "refId": "H"
+          },
+          {
+            "expr": "0.05",
+            "interval": "",
+            "legendFormat": "Failure ratio threshold",
+            "refId": "I"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "$cluster: Unpoliced workspaces ratio",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "percentunit",
+            "label": null,
+            "logBase": 1,
+            "max": "1",
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      }
+    ],
+    "refresh": "30s",
+    "schemaVersion": 27,
+    "style": "dark",
+    "tags": [
+      "gitpod-mixin"
+    ],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "selected": false,
+            "text": "Metrics Long Term Storage",
+            "value": "Metrics Long Term Storage"
+          },
+          "description": null,
+          "error": null,
+          "hide": 2,
+          "includeAll": false,
+          "label": null,
+          "multi": false,
+          "name": "datasource",
+          "options": [],
+          "query": "prometheus",
+          "queryValue": "",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "type": "datasource"
+        },
+        {
+          "allValue": null,
+          "current": {},
+          "datasource": "$datasource",
+          "definition": "label_values(gitpod_agent_smith_discovered_workspaces_total, cluster)",
+          "description": null,
+          "error": null,
+          "hide": 0,
+          "includeAll": true,
+          "label": null,
+          "multi": true,
+          "name": "cluster",
+          "options": [],
+          "query": {
+            "query": "label_values(gitpod_agent_smith_discovered_workspaces_total, cluster)",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        }
+      ]
+    },
+    "time": {
+      "from": "now-12h",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "Gitpod / SLOs / Policy",
+    "uid": "policy-slo"
+  }
