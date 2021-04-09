@@ -1,7 +1,4 @@
-vendor
 manifests
 
-jsonnetfile.json
-jsonnetfile.lock.json
 
 tmp/*
