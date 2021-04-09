@@ -37,7 +37,7 @@
   "gnetId": null,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1616178218791,
+  "iteration": 1617980935373,
   "links": [],
   "panels": [
     {
@@ -48,6 +48,224 @@
         "w": 24,
         "x": 0,
         "y": 0
+      },
+      "id": 43,
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$datasource",
+          "description": "Agent-smith policies workspaces in time cycles. If a cycle period ends before Agent-Smith is able to policy all workspaces, some workspaces are left untouched and may be free to run blacklisted commands.\n\nBig differences between workspaces discovered and policed indicate over-saturation of Agent-Smith.",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 1
+          },
+          "hiddenSeries": false,
+          "id": 45,
+          "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.4.3",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(rate(gitpod_agent_smith_discovered_workspaces_total{cluster=~\"$cluster\"}[5m])) by (cluster)",
+              "interval": "",
+              "legendFormat": "{{cluster}} - Workspaces discovered ",
+              "queryType": "randomWalk",
+              "refId": "A"
+            },
+            {
+              "expr": "sum(rate(gitpod_agent_smith_policed_workspaces_total{cluster=~\"$cluster\"}[5m])) by (cluster)",
+              "hide": false,
+              "interval": "",
+              "legendFormat": "{{cluster}} - Workspaces policed",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Policy cycle efficiency",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$datasource",
+          "description": "This panel represents the number of penalties that Agent-Smith is trying to apply per second.\n\nIt represents attempts and may not reflect the exact number of penalties applied, please check for error logs or slack messages to be sure if penalties are indeed applied.",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 1
+          },
+          "hiddenSeries": false,
+          "id": 46,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.4.3",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(rate(gitpod_agent_smith_penalty_attempts_total{cluster=~\"$cluster\"}[5m])) by (cluster, penalty)",
+              "interval": "",
+              "legendFormat": "{{cluster}} - {{penalty}}",
+              "queryType": "randomWalk",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Penalty attempts",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "title": "Agent-Smith metrics",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 1
       },
       "id": 16,
       "panels": [
@@ -70,7 +288,7 @@
             "h": 7,
             "w": 12,
             "x": 0,
-            "y": 1
+            "y": 2
           },
           "hiddenSeries": false,
           "id": 2,
@@ -169,7 +387,7 @@
             "h": 7,
             "w": 12,
             "x": 12,
-            "y": 1
+            "y": 2
           },
           "hiddenSeries": false,
           "id": 4,
@@ -278,7 +496,7 @@
             "h": 7,
             "w": 12,
             "x": 0,
-            "y": 8
+            "y": 9
           },
           "hiddenSeries": false,
           "id": 6,
@@ -377,7 +595,7 @@
             "h": 7,
             "w": 12,
             "x": 12,
-            "y": 8
+            "y": 9
           },
           "hiddenSeries": false,
           "id": 8,
@@ -475,7 +693,7 @@
             "h": 7,
             "w": 8,
             "x": 0,
-            "y": 15
+            "y": 16
           },
           "hiddenSeries": false,
           "id": 10,
@@ -579,7 +797,7 @@
             "h": 7,
             "w": 8,
             "x": 8,
-            "y": 15
+            "y": 16
           },
           "hiddenSeries": false,
           "id": 12,
@@ -684,7 +902,7 @@
             "h": 7,
             "w": 8,
             "x": 16,
-            "y": 15
+            "y": 16
           },
           "hiddenSeries": false,
           "id": 14,
@@ -790,7 +1008,7 @@
             "h": 9,
             "w": 8,
             "x": 0,
-            "y": 22
+            "y": 23
           },
           "hiddenSeries": false,
           "id": 36,
@@ -894,7 +1112,7 @@
             "h": 9,
             "w": 8,
             "x": 8,
-            "y": 22
+            "y": 23
           },
           "hiddenSeries": false,
           "id": 41,
@@ -1007,7 +1225,7 @@
             "h": 9,
             "w": 8,
             "x": 16,
-            "y": 22
+            "y": 23
           },
           "hiddenSeries": false,
           "id": 39,
@@ -1112,7 +1330,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 1
+        "y": 2
       },
       "id": 27,
       "panels": [
