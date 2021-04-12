@@ -33,9 +33,28 @@ local kp =
       grafana+: {
         dashboards+: $.gitpod.mixin.grafanaDashboards,
       },
+
     },
 
     gitpod: gitpod($.values.gitpodParams),
+    alertmanager+: {
+      prometheusRule+: (import './lib/alert-severity-mapper.libsonnet'),
+    },
+    kubeStateMetrics+: {
+      prometheusRule+: (import './lib/alert-severity-mapper.libsonnet'),
+    },
+    kubernetesControlPlane+: {
+      prometheusRule+: (import './lib/alert-severity-mapper.libsonnet'),
+    },
+    nodeExporter+: {
+      prometheusRule+: (import './lib/alert-severity-mapper.libsonnet'),
+    },
+    prometheus+: {
+      prometheusRule+: (import './lib/alert-severity-mapper.libsonnet'),
+    },
+    prometheusOperator+: {
+      prometheusRule+: (import './lib/alert-severity-mapper.libsonnet'),
+    },
     kubePrometheus+: {
       namespace+: {
         metadata+: {
@@ -44,6 +63,7 @@ local kp =
           },
         },
       },
+      prometheusRule+: (import './lib/alert-severity-mapper.libsonnet'),
     },
   }
 ;
