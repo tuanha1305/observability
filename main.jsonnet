@@ -70,7 +70,7 @@ local kp =
 
 local manifests = kp +
                   (if std.extVar('remote_write_url') != '' then (import './addons/remote-write.libsonnet') else {}) +
-                  (if std.extVar('slack_webhook_url') != '' then (import './addons/slack-alerting.libsonnet') else {}) +
+                  (if std.extVar('slack_webhook_url_critical') != '' then (import './addons/slack-alerting.libsonnet') else {}) +
                   (if std.extVar('dns_name') != '' then (import './addons/grafana-on-gcp-oauth.libsonnet') else {}) +
                   (if std.extVar('is_preview_env') then (import './addons/preview-env.libsonnet') else (import './addons/cluster-monitoring.libsonnet'))
 ;
