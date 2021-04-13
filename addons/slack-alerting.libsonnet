@@ -44,7 +44,7 @@
           slack_configs:
           - send_resolved: true
             api_url: %(slackWebhookUrlCritical)s
-            channel: '%(slackChannel)s_critical'
+            channel: '%(slackChannelPrefix)s_critical'
             title: '[{{ .Status | toUpper }}{{ if eq .Status "firing" }}{{ end }}] %(clusterName)s Monitoring'
             text: |
               {{ range .Alerts }}
@@ -62,7 +62,7 @@
           slack_configs:
           - send_resolved: true
             api_url: %(slackWebhookUrlWarning)s
-            channel: '%(slackChannel)s_warning'
+            channel: '%(slackChannelPrefix)s_warning'
             title: '[{{ .Status | toUpper }}{{ if eq .Status "firing" }}{{ end }}] %(clusterName)s Monitoring'
             text: |
               {{ range .Alerts }}
@@ -80,7 +80,7 @@
           slack_configs:
           - send_resolved: true
             api_url: %(slackWebhookUrlInfo)s
-            channel: '%(slackChannel)s_info'
+            channel: '%(slackChannelPrefix)s_info'
             title: '[{{ .Status | toUpper }}{{ if eq .Status "firing" }}{{ end }}] %(clusterName)s Monitoring'
             text: |
               {{ range .Alerts }}
