@@ -31,7 +31,28 @@ local kp =
       },
 
       grafana+: {
+        resources+: {
+          limits+: {
+            cpu: '300m',
+          },
+        },
         dashboards+: $.gitpod.mixin.grafanaDashboards,
+      },
+
+      kubeStateMetrics+: {
+        resources+: {
+          limits+: {
+            cpu: '200m',
+          },
+        },
+      },
+
+      nodeExporter+: {
+        resources+: {
+          limits+: {
+            cpu: '450m',
+          },
+        },
       },
 
     },
