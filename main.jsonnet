@@ -5,6 +5,7 @@ local kp =
   (import 'kube-prometheus/platforms/gke.libsonnet') +
   (import 'kube-prometheus/addons/podsecuritypolicies.libsonnet') +
   (import './addons/disable-grafana-auth.libsonnet') +
+  (import 'kube-prometheus/addons/strip-limits.libsonnet') +
   (import './addons/gitpod-runbooks.libsonnet') +
   {
     values+:: {
@@ -31,28 +32,7 @@ local kp =
       },
 
       grafana+: {
-        resources+: {
-          limits+: {
-            cpu: '300m',
-          },
-        },
         dashboards+: $.gitpod.mixin.grafanaDashboards,
-      },
-
-      kubeStateMetrics+: {
-        resources+: {
-          limits+: {
-            cpu: '200m',
-          },
-        },
-      },
-
-      nodeExporter+: {
-        resources+: {
-          limits+: {
-            cpu: '450m',
-          },
-        },
       },
 
     },
