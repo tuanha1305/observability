@@ -2,7 +2,7 @@
 // There is probably a good reason for why they are categorized the way they are.
 local unwatedAlerts = [
   'KubeStateMetricsListErrors',
-  'NodeFileSystemSpaceFillingUp',
+  'NodeFilesystemSpaceFillingUp',
 ];
 
 {
