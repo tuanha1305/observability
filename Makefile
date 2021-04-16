@@ -29,11 +29,11 @@ vendor: $(JB_BIN)
 
 .PHONY: build
 build: 
-	./hack/build.sh main.jsonnet
+	./hack/build.sh monitoring-satellite/main.jsonnet
 
 .PHONY: build-monitoring-central
 build-monitoring-central: 
-	./hack/build.sh monitoring-central.jsonnet
+	./hack/build.sh monitoring-central/monitoring-central.jsonnet
 
 .PHONY: deploy
 deploy: 
