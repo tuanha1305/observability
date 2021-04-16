@@ -39,22 +39,22 @@ local kp =
 
     gitpod: gitpod($.values.gitpodParams),
     alertmanager+: {
-      prometheusRule+: (import './lib/alert-severity-mapper.libsonnet'),
+      prometheusRule+: (import './lib/alert-severity-mapper.libsonnet') + (import './lib/alert-filter.libsonnet'),
     },
     kubeStateMetrics+: {
-      prometheusRule+: (import './lib/alert-severity-mapper.libsonnet'),
+      prometheusRule+: (import './lib/alert-severity-mapper.libsonnet') + (import './lib/alert-filter.libsonnet'),
     },
     kubernetesControlPlane+: {
-      prometheusRule+: (import './lib/alert-severity-mapper.libsonnet'),
+      prometheusRule+: (import './lib/alert-severity-mapper.libsonnet') + (import './lib/alert-filter.libsonnet'),
     },
     nodeExporter+: {
-      prometheusRule+: (import './lib/alert-severity-mapper.libsonnet'),
+      prometheusRule+: (import './lib/alert-severity-mapper.libsonnet') + (import './lib/alert-filter.libsonnet'),
     },
     prometheus+: {
-      prometheusRule+: (import './lib/alert-severity-mapper.libsonnet'),
+      prometheusRule+: (import './lib/alert-severity-mapper.libsonnet') + (import './lib/alert-filter.libsonnet'),
     },
     prometheusOperator+: {
-      prometheusRule+: (import './lib/alert-severity-mapper.libsonnet'),
+      prometheusRule+: (import './lib/alert-severity-mapper.libsonnet') + (import './lib/alert-filter.libsonnet'),
     },
     kubePrometheus+: {
       namespace+: {
@@ -64,7 +64,7 @@ local kp =
           },
         },
       },
-      prometheusRule+: (import './lib/alert-severity-mapper.libsonnet'),
+      prometheusRule+: (import './lib/alert-severity-mapper.libsonnet') + (import './lib/alert-filter.libsonnet'),
     },
   }
 ;
