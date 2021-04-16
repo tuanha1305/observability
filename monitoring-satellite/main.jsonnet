@@ -1,11 +1,11 @@
 local gitpod = import '../components/gitpod/gitpod.libsonnet';
 
 local kp =
-  (import 'kube-prometheus/main.libsonnet') +
-  (import 'kube-prometheus/platforms/gke.libsonnet') +
-  (import 'kube-prometheus/addons/podsecuritypolicies.libsonnet') +
+  (import '../vendor/kube-prometheus/main.libsonnet') +
+  (import '../vendor/kube-prometheus/platforms/gke.libsonnet') +
+  (import '../vendor/kube-prometheus/addons/podsecuritypolicies.libsonnet') +
   (import '../addons/disable-grafana-auth.libsonnet') +
-  (import 'kube-prometheus/addons/strip-limits.libsonnet') +
+  (import '../vendor/kube-prometheus/addons/strip-limits.libsonnet') +
   (import '../addons/gitpod-runbooks.libsonnet') +
   {
     values+:: {

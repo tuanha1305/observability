@@ -2,9 +2,9 @@ local gitpod = import '../components/gitpod/gitpod.libsonnet';
 local victoriaMetrics = import '../components/victoriametrics/victoriametrics.libsonnet';
 
 local kp =
-  (import 'kube-prometheus/main.libsonnet') +
-  (import 'kube-prometheus/platforms/gke.libsonnet') +
-  (import 'kube-prometheus/addons/podsecuritypolicies.libsonnet') +
+  (import '../vendor/kube-prometheus/main.libsonnet') +
+  (import '../vendor/kube-prometheus/platforms/gke.libsonnet') +
+  (import '../vendor/kube-prometheus/addons/podsecuritypolicies.libsonnet') +
   (import '../addons/disable-grafana-auth.libsonnet') +
   // LTS grafana's will always be the ones we want to provide an external DNS to.
   (import '../addons/grafana-on-gcp-oauth.libsonnet')
