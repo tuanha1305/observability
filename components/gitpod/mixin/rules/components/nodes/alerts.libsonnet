@@ -5,29 +5,29 @@
         name: 'gitpod-component-node-alerts',
         rules: [
           {
-            alert: 'GitpodMetaNodesOOMKills',
+            alert: 'GitpodMetaNodeOOMKills',
             labels: {
               severity: 'warning',
             },
             annotations: {
-              runbook_url: 'https://github.com/gitpod-io/observability/blob/main/runbooks/GitpodMetaNodesOOMKills.md',
+              runbook_url: 'https://github.com/gitpod-io/observability/blob/main/runbooks/GitpodMetaNodeOOMKills.md',
               summary: 'A meta node is reporting OOM kills.',
               description: 'Meta node {{ $labels.instance }} is reporting {{ $value }} Out Of Memory kills in the last 10 minutes.',
             },
             expr: 'increase(node_vmstat_oom_kill{instance=~".*meta.*"}[10m]) > 1',
           },
           {
-            alert: 'GitpodMetaCPUSaturation',
+            alert: 'GitpodMetaNodeCPUSaturation',
             labels: {
               severity: 'warning',
             },
             'for': '10m',
             annotations: {
-              runbook_url: 'https://github.com/gitpod-io/observability/blob/main/runbooks/GitpodMetaCPUSaturation.md',
+              runbook_url: 'https://github.com/gitpod-io/observability/blob/main/runbooks/GitpodMetaNodeCPUSaturation.md',
               summary: 'High CPU Saturation of a meta node.',
               description: 'Meta node {{ $labels.instance }} is reporting {{ printf "%.2f" $value }}% CPU usage for more than 10 minutes.',
             },
-            expr: '1 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle", instance=~".*meta.*"}[2m]))) > 0.75',
+            expr: '(1 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle", instance=~".*meta.*"}[2m])))) * 100 > 75',
           },
         ],
       },
