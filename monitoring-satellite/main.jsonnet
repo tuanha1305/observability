@@ -81,19 +81,4 @@ local manifests = kp +
 { ['prometheus/' + name]: manifests.prometheus[name] for name in std.objectFields(manifests.prometheus) } +
 { ['gitpod/' + name]: manifests.gitpod[name] for name in std.objectFields(manifests.gitpod) } +
 // Generic alerting rules, not related to a specific exporter.
-{ 'prometheus/kube-prometheus-prometheusRule': manifests.kubePrometheus.prometheusRule } +
-
-// Preview environments are only interested on monitoring gitpod itself.
-// There is no need to include anything more than a namespace and prometheus+grafana for them.
-if !std.extVar('is_preview_env') then
-  { ['alertmanager/' + name]: manifests.alertmanager[name] for name in std.objectFields(manifests.alertmanager) } +
-  // BlackboxExporter Can be used for certificates and uptimecheck monitoring, but not necessary for now.
-  // { ['blackbox-exporter/' + name]: kp.blackboxExporter[name] for name in std.objectFields(kp.blackboxExporter) } +
-  { ['kube-state-metrics/' + name]: manifests.kubeStateMetrics[name] for name in std.objectFields(manifests.kubeStateMetrics) } +
-  { ['kubernetes/' + name]: manifests.kubernetesControlPlane[name] for name in std.objectFields(manifests.kubernetesControlPlane) }
-  { ['node-exporter/' + name]: manifests.nodeExporter[name] for name in std.objectFields(manifests.nodeExporter) } +
-  // Prometheus adapter replaces k8s metrics-server. GKE enables metrics-server by default and we're not interested in replacing it.
-  // { ['prometheus-adapter/' + name]: manifests.prometheusAdapter[name] for name in std.objectFields(manifests.prometheusAdapter) } +
-  { ['prometheus-operator/' + name]: manifests.prometheusOperator[name] for name in std.objectFields(manifests.prometheusOperator) }
-else
-  {}
+{ 'prometheus/kube-prometheus-prometheusRule': manifests.kubePrometheus.prometheusRule }
