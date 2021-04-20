@@ -12,7 +12,7 @@
             annotations: {
               runbook_url: 'https://github.com/gitpod-io/observability/blob/main/runbooks/GitpodMetaNodeOOMKills.md',
               summary: 'A meta node is reporting OOM kills.',
-              description: 'Meta node {{ $labels.instance }} is reporting {{ $value }} Out Of Memory kills in the last 10 minutes.',
+              description: 'Meta node {{ $labels.instance }} is reporting {{ printf "%.2f" $value }} Out Of Memory kills in the last 10 minutes.',
             },
             expr: 'increase(node_vmstat_oom_kill{instance=~".*meta.*"}[10m]) > 1',
           },
