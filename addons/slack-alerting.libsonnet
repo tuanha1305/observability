@@ -100,12 +100,12 @@
         - name: PagerDuty
           pagerduty_configs:
           - send_resolved: true
-            routing_key: %(pagerdutyRoutingKey)s
-            description: {{ .Annotations.description }}
-            severity: {{ .Labels.severity }}
+            routing_key: '%(pagerdutyRoutingKey)s'
+            description: '{{ .Annotations.description }}'
+            severity: '{{ .Labels.severity }}'
             links:
-              href: {{ .CommonAnnotations.runbook_url }}
-              text: 'Runbook'
+              - href: {{ .CommonAnnotations.runbook_url }}
+                text: 'Runbook'
         templates: []
       ||| % {
         clusterName: std.extVar('cluster_name'),
