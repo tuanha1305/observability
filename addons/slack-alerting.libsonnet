@@ -104,7 +104,7 @@
             description: '{{ .Annotations.description }}'
             severity: '{{ .Labels.severity }}'
             links:
-              - href: {{ .CommonAnnotations.runbook_url }}
+              - href: '{{ .CommonAnnotations.runbook_url }}'
                 text: 'Runbook'
         templates: []
       ||| % {
