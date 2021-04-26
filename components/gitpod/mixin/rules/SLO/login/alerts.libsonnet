@@ -9,7 +9,7 @@
           {
             alert: 'GitpodLoginErrorBudgetBurn',
             labels: {
-              severity: 'critical',
+              severity: 'page',
             },
             annotations: {
               runbook_url: 'https://github.com/gitpod-io/pluggable-o11y-stack/blob/main/runbooks/GitpodLoginErrorBudgetBurn.md',
