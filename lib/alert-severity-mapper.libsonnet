@@ -3,7 +3,7 @@
 local alertSeverityMap = {
   // WIP Page alerts
   // Alerts with 'Page' severity will be routed to PagerDuty instead of Slack.
-  // We have a really restricted page severity because not all 'critical' alerts are actionable today. 
+  // We have a really restricted page severity because not all 'critical' alerts are actionable today.
   // The final goal is that 'critical' only contain actionable alerts and they will be the ones routed to pagerduty.
   // When we have that, then let's remove the 'page' severity.
   NodeFilesystemAlmostOutOfSpace: 'page',
