@@ -1,6 +1,13 @@
 // Before mapping and changing alerts severity, it is good to keep track on ho they are being categorized upstream!
 // There is probably a good reason for why they are categorized the way they are.
 local alertSeverityMap = {
+  // WIP Page alerts
+  // Alerts with 'Page' severity will be routed to PagerDuty instead of Slack.
+  // We have a really restricted page severity because not all 'critical' alerts are actionable today. 
+  // The final goal is that 'critical' only contain actionable alerts and they will be the ones routed to pagerduty.
+  // When we have that, then let's remove the 'page' severity.
+  NodeFilesystemAlmostOutOfSpace: 'page',
+
   // Critical alerts
   // Map alerts as 'critical' if it indicates a problem that requires human intervention immediately.
   KubePodCrashLooping: 'critical',
