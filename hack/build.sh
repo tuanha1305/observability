@@ -31,6 +31,7 @@ jsonnet -J vendor -m manifests \
 --ext-str slack_webhook_url_warning=${SLACK_WEBHOOK_URL_WARNING:-""} \
 --ext-str slack_webhook_url_info=${SLACK_WEBHOOK_URL_INFO:-""} \
 --ext-str slack_channel_prefix=${SLACK_CHANNEL_PREFIX:-""} \
+--ext-str pagerduty_service_key=${PAGERDUTY_SERVICE_KEY:-""} \
 --ext-str grafana_ingress_node_port=${GRAFANA_INGRESS_NODE_PORT} \
 --ext-str dns_name=${DNS_NAME:-''} \
 --ext-str gcp_external_ip_address=${GCP_EXTERNAL_IP_ADDRESS} \

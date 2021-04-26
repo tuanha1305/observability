@@ -9,6 +9,9 @@
           group_by:
           - alertname
           routes:
+          - receiver: PagerDuty
+            match:
+              severity: page
           - receiver: SlackCritical
             match:
               severity: critical
@@ -94,6 +97,15 @@
             - type: button
               text: 'Runbook :book:'
               url: '{{ .CommonAnnotations.runbook_url }}'
+        - name: PagerDuty
+          pagerduty_configs:
+          - send_resolved: true
+            service_key: %(pagerdutyServiceKey)s
+            description: {{ .Annotations.description }}
+            severity: {{ .Labels.severity }}
+            links:
+              href: {{ .CommonAnnotations.runbook_url }}
+              text: 'Runbook'
         templates: []
       ||| % {
         clusterName: std.extVar('cluster_name'),
@@ -101,6 +113,7 @@
         slackWebhookUrlWarning: std.extVar('slack_webhook_url_warning'),
         slackWebhookUrlInfo: std.extVar('slack_webhook_url_info'),
         slackChannelPrefix: std.extVar('slack_channel_prefix'),
+        pagerdutyServiceKey: std.extVar('pagerduty_service_key'),
       },
     },
   },
