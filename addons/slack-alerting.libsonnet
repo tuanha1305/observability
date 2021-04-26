@@ -100,7 +100,7 @@
         - name: PagerDuty
           pagerduty_configs:
           - send_resolved: true
-            service_key: %(pagerdutyServiceKey)s
+            routing_key: %(pagerdutyRoutingKey)s
             description: {{ .Annotations.description }}
             severity: {{ .Labels.severity }}
             links:
@@ -113,7 +113,7 @@
         slackWebhookUrlWarning: std.extVar('slack_webhook_url_warning'),
         slackWebhookUrlInfo: std.extVar('slack_webhook_url_info'),
         slackChannelPrefix: std.extVar('slack_channel_prefix'),
-        pagerdutyServiceKey: std.extVar('pagerduty_service_key'),
+        pagerdutyRoutingKey: std.extVar('pagerduty_routing_key'),
       },
     },
   },
