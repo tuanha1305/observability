@@ -101,6 +101,10 @@
           pagerduty_configs:
           - send_resolved: true
             routing_key: '%(pagerdutyRoutingKey)s'
+            description: '{{ .Annotations.description }}'
+            links:
+              - href: '{{ .CommonAnnotations.runbook_url }}'
+                text: 'Runbook'
         templates: []
       ||| % {
         clusterName: std.extVar('cluster_name'),
