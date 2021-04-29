@@ -431,13 +431,13 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "count(node_uname_info{instance=~\".*workspace-pool.*\"}) by (cluster)",
+          "expr": "count(node_uname_info{cluster=~\"$cluster\", instance=~\".*workspace-pool.*\"}) by (cluster)",
           "interval": "",
           "legendFormat": "Workspace Nodes",
           "refId": "A"
         },
         {
-          "expr": "count(node_uname_info{instance=~\".*meta-pool.*\"}) by (cluster)",
+          "expr": "count(node_uname_info{cluster=~\"$cluster\", instance=~\".*meta-pool.*\"}) by (cluster)",
           "interval": "",
           "legendFormat": "Meta Nodes",
           "refId": "B"
