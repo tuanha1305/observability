@@ -219,7 +219,7 @@ function(params) {
     },
   },
 
-  containerdMetricsMonitor: {
+  containerdMetricsServiceMonitor: {
     apiVersion: 'monitoring.coreos.com/v1',
     kind: 'ServiceMonitor',
     metadata: {
