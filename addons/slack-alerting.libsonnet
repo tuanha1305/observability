@@ -9,10 +9,7 @@
           group_by:
           - alertname
           routes:
-          - receiver: PagerDuty
-            match:
-              severity: critical
-          - receiver: SlackCritical
+          - receiver: CriticalReceivers
             match:
               severity: critical
           - receiver: SlackWarning
@@ -43,7 +40,7 @@
         receivers:
         - name: Black_Hole
         - name: Watchdog
-        - name: SlackCritical
+        - name: CriticalReceivers
           slack_configs:
           - send_resolved: true
             api_url: %(slackWebhookUrlCritical)s
@@ -61,6 +58,13 @@
             - type: button
               text: 'Runbook :book:'
               url: '{{ .CommonAnnotations.runbook_url }}'
+          pagerduty_configs:
+          - send_resolved: true
+            routing_key: '%(pagerdutyRoutingKey)s'
+            description: '{{ .Annotations.description }}'
+            links:
+              - href: '{{ .CommonAnnotations.runbook_url }}'
+                text: 'Runbook'
         - name: SlackWarning
           slack_configs:
           - send_resolved: true
@@ -97,14 +101,6 @@
             - type: button
               text: 'Runbook :book:'
               url: '{{ .CommonAnnotations.runbook_url }}'
-        - name: PagerDuty
-          pagerduty_configs:
-          - send_resolved: true
-            routing_key: '%(pagerdutyRoutingKey)s'
-            description: '{{ .Annotations.description }}'
-            links:
-              - href: '{{ .CommonAnnotations.runbook_url }}'
-                text: 'Runbook'
         templates: []
       ||| % {
         clusterName: std.extVar('cluster_name'),
