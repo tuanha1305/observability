@@ -198,6 +198,84 @@ function(params) {
     },
   },
 
+  containerdMetricsService: {
+    apiVersion: 'v1',
+    kind: 'Service',
+    metadata: {
+      name: $._config.name + '-containerd-metrics',
+      namespace: $._config.gitpodNamespace,
+      labels: $._config.commonLabels {
+        'app.kubernetes.io/component': 'containerd-metrics',
+      },
+    },
+    spec: {
+      selector: {
+        component: 'containerd-metrics',
+      },
+      ports: [{
+        name: 'metrics',
+        port: 9500,
+      }],
+    },
+  },
+
+  containerdMetricsMonitor: {
+    apiVersion: 'monitoring.coreos.com/v1',
+    kind: 'ServiceMonitor',
+    metadata: {
+      name: $._config.name + '-containerd-metrics',
+      namespace: $._config.namespace,
+      labels: $._config.commonLabels,
+    },
+    spec: {
+      jobLabel: 'app.kubernetes.io/component',
+      selector: {
+        matchLabels: $._config.commonLabels {
+          'app.kubernetes.io/component': 'containerd-metrics',
+        },
+      },
+      namespaceSelector: {
+        matchNames: [
+          $._config.gitpodNamespace,
+        ],
+      },
+      endpoints: [{
+        port: 'metrics',
+        interval: '30s',
+      }],
+    },
+  },
+
+  containerdMetricsNetworkPolicy: {
+    apiVersion: 'networking.k8s.io/v1',
+    kind: 'NetworkPolicy',
+    metadata: {
+      name: 'containerd-metrics-allow-kube-prometheus',
+      namespace: $._config.gitpodNamespace,
+      labels: $._config.commonLabels,
+    },
+    spec: {
+      podSelector: {
+        matchLabels: {
+          component: 'containerd-metrics',
+        },
+      },
+      policyTypes: ['Ingress'],
+      ingress: [{
+        from: [{
+          podSelector: {
+            matchLabels: $._config.prometheusLabels,
+          },
+          namespaceSelector: {
+            matchLabels: {
+              namespace: $._config.namespace,
+            },
+          },
+        }],
+      }],
+    },
+  },
+
   contentServiceService: {
     apiVersion: 'v1',
     kind: 'Service',
