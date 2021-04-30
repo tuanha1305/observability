@@ -11,7 +11,7 @@
           routes:
           - receiver: PagerDuty
             match:
-              severity: page
+              severity: critical
           - receiver: SlackCritical
             match:
               severity: critical
