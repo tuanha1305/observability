@@ -9,7 +9,7 @@
           group_by:
           - alertname
           routes:
-          - receiver: CriticalReceivers
+          - receiver: PagerDuty
             match:
               severity: critical
           - receiver: SlackWarning
@@ -40,24 +40,7 @@
         receivers:
         - name: Black_Hole
         - name: Watchdog
-        - name: CriticalReceivers
-          slack_configs:
-          - send_resolved: true
-            api_url: %(slackWebhookUrlCritical)s
-            channel: '%(slackChannelPrefix)s_critical'
-            title: '[{{ .Status | toUpper }}{{ if eq .Status "firing" }}{{ end }}] %(clusterName)s Monitoring'
-            text: |
-              {{ range .Alerts }}
-              **Immediate Action Required!**
-
-              *Cluster:* {{ .Labels.cluster }}
-              *Alert:* {{ .Labels.alertname }}
-              *Description:* {{ .Annotations.description }}
-              {{ end }}
-            actions:
-            - type: button
-              text: 'Runbook :book:'
-              url: '{{ .CommonAnnotations.runbook_url }}'
+        - name: PagerDuty
           pagerduty_configs:
           - send_resolved: true
             routing_key: '%(pagerdutyRoutingKey)s'
